@@ -1,0 +1,94 @@
+# Browser, Context, Page
+
+## 1. Browser
+
+### Definition
+Browser is the actual browser instance such as Chrome, Firefox, or Edge.
+
+### Real Life Example
+When I open Google Chrome on my laptop, that Chrome application is the Browser.
+
+### Example
+- Chrome
+- Firefox
+- Edge
+- Safari
+
+---
+
+## 2. Context
+
+### Definition
+A Context is an isolated user session/profile inside a browser.
+
+Each context has its own:
+- Cookies
+- Login session
+- Local storage
+- Cache
+
+### Real Life Example
+
+Suppose Chrome has multiple profiles:
+
+- Kirti Profile
+- Mridul Profile
+- Guest Profile
+
+Each profile has separate login data and settings.
+
+In Playwright, these profiles are similar to Contexts.
+
+### Why Context is Used?
+
+To keep different users' data separate.
+
+Example:
+- User A logged in
+- User B logged in
+
+Both can work in the same browser without affecting each other.
+
+---
+
+## 3. Page
+
+### Definition
+A Page represents a browser tab.
+
+### Real Life Example
+
+Inside Kirti's Chrome profile:
+
+- Amazon tab
+- LinkedIn tab
+- Instagram tab
+
+Each tab is considered a Page in Playwright.
+
+---
+
+## Hierarchy
+
+Browser
+    ↓
+Context
+    ↓
+Page
+
+---
+
+## Complete Real-Life Example
+
+Chrome (Browser)
+      │
+      ▼
+Kirti Profile (Context)
+      │
+      ├── Amazon Tab (Page 1)
+      ├── LinkedIn Tab (Page 2)
+      └── Instagram Tab (Page 3)
+
+Mridul Profile (Context)
+      │
+      └── Gmail Tab (Page 1)

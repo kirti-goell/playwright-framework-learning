@@ -1,0 +1,83 @@
+Actions :
+
+a. . click()
+Clicks an element.
+
+await page.getByRole('button', {
+  name: 'Login'
+}).click();
+
+b. . fill()
+Used for text fields.
+
+HTML:
+<input type="text">
+
+TypeScript:
+await page
+  .getByRole('textbox')
+  .fill('Kirti');
+
+
+c. check()
+Used for checkboxes.
+
+HTML:
+<input type="checkbox">
+
+TypeScript:
+await page
+  .getByRole('checkbox')
+  .check();
+
+
+d. . uncheck()
+Untick a checkbox.
+
+await page
+  .getByRole('checkbox')
+  .uncheck();
+
+
+e. . selectOption()
+Used for dropdowns.
+
+HTML:
+<select>
+  <option value="india">India</option>
+  <option value="usa">USA</option>
+</select>
+
+TypeScript:
+await page
+  .locator('select')
+  .selectOption('india');
+
+or
+await page
+  .locator('select')
+  .selectOption({ label: 'India' });
+
+
+f. . hover()
+
+Move mouse over an element.
+
+await page
+  .getByText('Products')
+  .hover();
+
+
+g. . press()
+Press a keyboard key.
+
+await page
+  .getByRole('textbox')
+  .press('Enter');
+
+Examples:
+
+.press('Enter')
+.press('Tab')
+.press('Escape')
+.press('ArrowDown')

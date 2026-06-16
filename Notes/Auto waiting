@@ -1,0 +1,83 @@
+Auto-Waiting (One of Playwright's biggest strengths)
+
+Many beginners coming from Selenium think:
+await page.waitForTimeout(5000);
+is normal.
+
+In Playwright, it's usually a bad practice.
+
+
+
+
+What is Auto-Waiting?
+
+When you write:
+await page.getByRole('button', {
+  name: 'Login'
+}).click();
+
+Playwright automatically waits for the button to:
+
+Exist in DOM
+Become visible
+Become enabled
+Become stable (not moving)
+Then it clicks.
+
+You don't need:
+await page.waitForTimeout(5000);
+before every action.
+
+Example
+
+Imagine page loads after 3 seconds.
+
+await page.getByRole('button', {
+  name: 'Login'
+}).click();
+
+Playwright will wait automatically and then click.
+
+Auto-Wait in Assertions
+await expect(
+  page.getByText('Login Successful')
+).toBeVisible();
+
+Playwright keeps checking for a few seconds until:
+Login Successful
+appears.
+
+If it appears → Pass ✅
+If not → Fail ❌
+
+
+
+
+
+Explicit Waits (When Needed)
+
+Sometimes you do need waits.
+
+Wait for URL
+await page.waitForURL('**/dashboard');
+Wait for Element
+await page.locator('#result').waitFor();
+Wait for Visibility
+await page.locator('#result')
+  .waitFor({ state: 'visible' });
+
+
+Avoid This
+await page.waitForTimeout(5000);
+
+Interviewers often ask:
+
+"Do you use waitForTimeout?"
+Good answer:
+Only for debugging. In automation scripts I prefer Playwright's auto-waiting and explicit waits like waitForURL() or locator().waitFor().
+
+
+Interview Question
+Why is Playwright more stable than Selenium?
+One strong answer:
+Playwright provides built-in auto-waiting for actions and assertions, reducing flaky tests and minimizing the need for hard-coded waits.

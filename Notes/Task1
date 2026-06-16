@@ -1,0 +1,88 @@
+Username: [______]
+Password: [______]
+
+Gender:
+( ) Male
+( ) Female
+
+☐ Remember Me
+
+Country: [India ▼]
+
+About You:
+[____________]
+
+[ Login ]
+
+
+1. Given : <input type="text" placeholder="Username">
+what i return in typescript : await page.getByRole('textbox' ).fill('kirti') // Playwright will throw a Strict Mode Violation because it found 2 textboxes.
+corrected ans : using getByLabel()
+await page.getByPlaceholder('Username').fill('Kirti');
+or using locator 
+await page.locator('#username').fill('Kirti');
+or attributes
+await page.locator('[placeholder="Username"]').fill('Kirti'); // but not recommended much
+
+
+2.Given : <input type="password">
+what i return in typescript : await page.loactor('[type="password"]').fill('kg123')
+
+3. <input type="checkbox">
+await page.getByRole('checkbox').check()
+// verifying it
+await expect(page.getByRole('checkbox')).toBeChecked();
+
+4. <input type="radio" id="male" name="gender" value="male">
+<label for="male">Male</label>
+
+<input type="radio" id="female" name="gender" value="female">
+<label for="female">Female</label>
+await page
+  .getByLabel('Female')
+  .check();
+
+5. <input type="checkbox" id="remember">
+<label for="remember">Remember Me</label>
+await page.getByLabel('Remember Me').check();
+
+6.<label for="country">Country</label>
+
+<select id="country">
+  <option value="india">India</option>
+  <option value="usa">USA</option>
+</select>
+await page
+  .getByRole('combobox', { name: 'Country' })
+  .selectOption('india');
+    
+verification
+await expect(
+  page.getByRole('combobox', { name: 'Country' })
+).toHaveValue('india');
+
+<label for="about">About You</label>
+
+<textarea
+    id="about"
+    rows="4"
+    cols="30">
+</textarea>
+await page
+  .getByLabel('About You')
+  .fill('I am learning Playwright');
+
+verification
+await expect(
+  page.getByLabel('About You')
+).toHaveValue('I am learning Playwright');
+
+
+<button>Login</button>
+await page
+  .getByRole('button', { name: 'Login' })
+  .click();
+  verification
+  await expect(
+  page.getByRole('button', { name: 'Login' })
+).toBeVisible();

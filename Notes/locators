@@ -1,0 +1,160 @@
+What are Locators?
+
+A locator is simply a way to tell Playwright:
+"Hey, find this element on the page."
+For example:
+Search box
+Login button
+Username field
+Product name
+All these are elements, and locators help us identify them.
+
+
+1. getByRole() ⭐ Recommended
+Finds elements using their accessibility role and visible name.
+HTML
+<button>Login</button>
+TypeScript
+await page.getByRole('button', { name: 'Login' }).click();
+
+Why Playwright recommends it?
+Because it behaves like a real user.
+
+A user sees:
+Login button
+not
+button with id="btn123"
+
+
+Common Roles: 
+Element                       Role
+button                      button
+input                   	textbox
+checkbox                	checkbox
+radio button            	radio
+link	                    link
+dropdown                	combobox
+
+Example
+await page.getByRole('textbox').fill('Kirti');
+HTML:
+<input type="text">
+
+
+
+2. getByText()
+Finds elements using visible text.
+
+HTML
+<h1>Welcome Kirti</h1>
+TypeScript
+await page.getByText('Welcome Kirti').click();
+
+Example:
+HTML
+<button>Submit</button>
+
+TypeScript
+await page.getByText('Submit').click();
+
+
+Verification Example
+await expect(
+  page.getByText('Login Successful')
+).toBeVisible();
+
+
+3. CSS Selectors using locator()
+In Playwright, CSS selectors are generally used through locator().
+
+a. By ID
+
+HTML
+<input id="username">
+TypeScript
+await page.locator('#username').fill('Kirti');
+# means ID.
+
+b. By Class
+
+HTML
+<button class="login-btn">
+TypeScript
+await page.locator('.login-btn').click();
+. means class.
+
+c. By Attribute
+
+HTML
+<input placeholder="Enter Email">
+TypeScript
+await page
+  .locator('[placeholder="Enter Email"]')
+  .fill('kirti@gmail.com');
+
+
+d. By Tag Name
+
+HTML
+<button>Login</button>
+TypeScript
+await page.locator('button').click();
+
+
+
+Comparison
+
+HTML
+<button id="buy-btn">
+  Buy Now
+</button>
+Using getByRole()
+await page.getByRole('button', {
+  name: 'Buy Now'
+}).click();
+
+Using getByText()
+await page.getByText('Buy Now').click();
+
+Using CSS Selector
+await page.locator('#buy-btn').click();
+
+
+Which One Should You Prefer?
+1️⃣ getByRole()
+page.getByRole('button', { name: 'Login' })
+Most reliable and recommended.
+
+2️⃣ getByText()
+page.getByText('Submit')
+Good when text is unique.
+
+3️⃣ locator() with CSS
+page.locator('#login-btn')
+Use when role/text is unavailable or unstable.
+
+
+getByRole()  (Highest Priority)
+      ↓
+getByText()
+      ↓
+locator(CSS) (Lower Priority)
+
+
+Why?
+
+getByRole(): 
+User-centric
+Accessibility-friendly
+More stable
+Playwright recommended
+
+
+getByText()
+Good, but text change ho sakta hai.
+
+CSS Selector
+IDs/classes frequently change ho sakte hain.
+Maintenance zyada hoti hai.
+
+I prefer getByRole() first because Playwright recommends user-facing locators. If role-based identification is not feasible, I use getByText(). CSS selectors via locator() are generally my fallback option."

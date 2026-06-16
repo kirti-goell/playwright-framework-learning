@@ -1,0 +1,124 @@
+What are Assertions?
+Assertions verify that something is true and 'expect' is used for assertions
+
+Example:
+
+Login button clicked
+      ↓
+Dashboard appears
+      ↓
+Verify dashboard is visible
+
+1. toBeVisible() ⭐ Most Common
+await expect(
+  page.getByText('Welcome')
+).toBeVisible();
+
+Meaning:
+Verify that "Welcome" is visible on the page.
+
+
+
+2. toHaveText()
+
+HTML:
+<h1>Dashboard</h1>
+TypeScript:
+
+await expect(
+  page.locator('h1')
+).toHaveText('Dashboard');
+
+Meaning:
+Verify exact text.
+
+
+3. toContainText()
+await expect(
+  page.locator('h1')
+).toContainText('Dash'); // dashboard ka dash
+
+Meaning:
+Verify partial text.
+
+
+
+4. toBeHidden()
+await expect(
+  page.getByText('Loading...')
+).toBeHidden();
+
+Meaning:
+Verify element is not visible.
+
+5. toBeChecked()
+
+Checkbox example:
+await expect(
+  page.getByRole('checkbox')
+).toBeChecked();
+
+Meaning:
+Verify checkbox is checked.
+
+
+6. toHaveValue()
+
+Input field:
+await page
+  .getByRole('textbox')
+  .fill('Kirti');
+
+Verify:
+await expect(
+  page.getByRole('textbox')
+).toHaveValue('Kirti');
+
+
+7. toHaveURL()
+
+After login:
+await expect(page)
+  .toHaveURL('https://app.com/dashboard');
+
+Meaning:
+Verify current URL.
+
+8. toHaveTitle()
+await expect(page)
+  .toHaveTitle('Dashboard');
+
+Meaning:
+Verify page title.
+
+
+
+
+Real Login Example
+await page.goto('https://example.com');
+
+await page
+  .getByRole('textbox', { name: 'Username' })
+  .fill('admin');
+
+await page
+  .getByRole('button', { name: 'Login' })
+  .click();
+
+await expect(
+  page.getByText('Dashboard')
+).toBeVisible();
+
+This is a real test.
+Without the last line, Playwright just clicks.
+With the last line, Playwright verifies success.
+
+
+Most Used Assertions in Real QA Projects
+1. toBeVisible()   ⭐⭐⭐⭐⭐
+2. toHaveText()    ⭐⭐⭐⭐⭐
+3. toContainText() ⭐⭐⭐⭐
+4. toHaveURL()     ⭐⭐⭐⭐
+5. toHaveValue()   ⭐⭐⭐
+6. toBeChecked()   ⭐⭐⭐
+7. toHaveTitle()   ⭐⭐

@@ -1,0 +1,135 @@
+1. Why do we need Advanced Locators?
+
+Suppose a page has:
+
+<button>Add to Cart</button>
+<button>Add to Cart</button>
+<button>Add to Cart</button>
+
+Now this will fail:
+
+await page.getByRole('button', {
+  name: 'Add to Cart'
+}).click();
+
+Why?
+Because Playwright found 3 matching elements.
+It doesn't know which one you want.
+This is called Strict Mode Violation.
+
+
+2. first()
+Select the first matching element.
+
+await page
+  .getByRole('button', { name: 'Add to Cart' })
+  .first()
+  .click();
+
+Meaning:
+[Button1] [Button2] [Button3]
+    ↑
+  Click this
+
+
+3. last()
+Select the last matching element.
+
+await page
+  .getByRole('button', { name: 'Add to Cart' })
+  .last()
+  .click();
+
+Meaning:
+[Button1] [Button2] [Button3]
+                         ↑
+                     Click this
+
+
+
+                     
+4. nth()
+Select a specific index.
+
+await page
+  .getByRole('button', { name: 'Add to Cart' })
+  .nth(1)
+  .click();
+
+Indexes start from 0.
+
+0 → First
+1 → Second
+2 → Third
+
+So:
+.nth(1)
+means second element.
+
+
+6. Locator Chaining ⭐
+HTML:
+<div class="login-form">
+    <input id="username">
+</div>
+
+Instead of:
+page.locator('#username')
+
+Use:
+page
+  .locator('.login-form')
+  .locator('#username');
+
+Meaning:
+Find login form
+      ↓
+Find username inside it
+
+This makes locators more specific.
+
+
+
+7. filter() ⭐ Very Important
+
+Suppose:
+<div>
+  <h3>iPhone</h3>
+  <button>Add to Cart</button>
+</div>
+
+<div>
+  <h3>Samsung</h3>
+  <button>Add to Cart</button>
+</div>
+ou want the Samsung button.
+
+await page
+  .locator('div')
+  .filter({ hasText: 'Samsung' })
+  .getByRole('button', {
+      name: 'Add to Cart'
+  })
+  .click();
+
+Meaning:
+
+Find Samsung card
+      ↓
+Inside it click Add to Cart
+
+
+8. count()
+Count matching elements.
+
+const count =
+  await page
+    .getByRole('button')
+    .count();
+
+console.log(count);
+
+Suppose there are 10 buttons.
+
+Output:
+10

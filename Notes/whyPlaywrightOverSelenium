@@ -1,0 +1,102 @@
+If interviewer asks suddenly, remember these 5:
+
+1. Auto-Waiting
+2. Faster Execution
+3. Modern Locators (getByRole)
+4. Browser Contexts
+5. Trace Viewer
+
+
+1. Auto-Waiting ⭐
+Selenium
+driver.findElement(By.id("login")).click();
+
+Often needs:
+
+WebDriverWait
+Implicit Wait
+Explicit Wait
+Thread.sleep()
+Playwright
+await page.getByRole('button', {
+  name: 'Login'
+}).click();
+
+Playwright automatically waits for:
+
+Element to exist
+Element to be visible
+Element to be enabled
+Element to be stable
+
+✅ Less flaky tests
+
+
+2. Faster Execution
+
+Playwright communicates directly with browsers.
+
+Selenium uses:
+
+Test Script
+    ↓
+WebDriver
+    ↓
+Browser
+
+Playwright:
+
+Test Script
+    ↓
+Browser
+
+✅ Generally faster execution.
+
+3. Modern Locator Strategy ⭐
+Selenium
+driver.findElement(By.xpath("//button[text()='Login']"))
+Playwright
+page.getByRole('button', {
+  name: 'Login'
+})
+
+Playwright encourages user-facing locators.
+
+✅ More readable
+✅ More maintainable
+
+
+4. Multiple Browser Contexts
+
+Playwright can create multiple isolated sessions in the same browser.
+
+const context1 = await browser.newContext();
+const context2 = await browser.newContext();
+
+Useful for:
+
+Buyer vs Seller
+Admin vs User
+Chat Applications
+
+Much lighter than launching multiple browsers.
+
+5. Trace Viewer ⭐
+
+One of Playwright's strongest features.
+
+After failure you can see:
+
+Action performed
+↓
+Network calls
+↓
+Screenshots
+↓
+DOM state
+↓
+Error
+
+Almost like a "recording" of the test.
+
+Helps debug failures very quickly.
