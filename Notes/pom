@@ -1,0 +1,162 @@
+What is POM?
+
+Page Object Model (POM) is a design pattern in test automation where:
+
+Page locators are stored in page classes.
+Page actions/methods are stored in page classes.
+Test cases remain in test files.
+
+This separates page logic from test logic.
+
+Why Do We Use POM?
+
+Without POM:
+
+await page.locator('#user-name').fill('standard_user');
+await page.locator('#password').fill('secret_sauce');
+await page.locator('#login-button').click();
+
+The same code gets repeated in many tests.
+
+With POM:
+
+await loginPage.login(
+  'standard_user',
+  'secret_sauce'
+);
+
+Code becomes cleaner and reusable.
+
+Benefits of POM
+1. Reusability
+
+Write locators and methods once.
+
+Use them in multiple tests.
+
+2. Maintainability
+
+If locator changes:
+
+#login-button
+
+to
+
+#sign-in-button
+
+Only update it in one place.
+
+3. Readability
+
+Tests become easy to understand.
+
+Example:
+
+await loginPage.login();
+
+is easier to read than multiple locator actions.
+
+4. Reduced Code Duplication
+
+Same code is not repeated across tests.
+
+Folder Structure
+project
+│
+├── pages
+│   └── LoginPage.ts
+│
+├── tests
+│   └── login.spec.ts
+│
+└── playwright.config.ts
+What Goes Inside a Page Class?
+Locators
+readonly username: Locator;
+readonly password: Locator;
+readonly loginButton: Locator;
+Methods
+async login(username: string, password: string)
+
+Methods perform actions on the page.
+
+What Goes Inside a Test File?
+Test Cases
+test('Valid Login')
+Assertions
+expect(page).toHaveURL(/inventory/);
+Basic POM Flow
+Step 1
+
+Create Page Class
+
+export class LoginPage
+Step 2
+
+Store Locators
+
+this.username = page.locator('#user-name');
+Step 3
+
+Create Methods
+
+async login(username: string, password: string)
+Step 4
+
+Use Methods in Tests
+
+await loginPage.login(
+  'standard_user',
+  'secret_sauce'
+);
+Constructor Purpose
+constructor(page: Page) {
+  this.page = page;
+}
+
+Purpose:
+
+Receives Playwright page object.
+Stores it inside the class.
+Allows methods and locators to use the page.
+Common Interview Question
+What is POM?
+
+Answer:
+
+Page Object Model is a design pattern in automation testing where page locators and page actions are stored in 
+separate page classes while test cases remain in test files. It improves reusability, readability, and maintainability
+of the framework.
+
+Golden Rule
+Page Class
+
+Contains:
+
+Locators
+Methods
+
+Example:
+
+username
+password
+loginButton
+
+login()
+logout()
+Test File
+
+Contains:
+
+Test Cases
+Assertions
+
+Example:
+
+Valid Login
+Invalid Login
+
+expect()
+One-Line Revision
+
+POM = Separate locators and page actions into page classes so test files remain clean, reusable, and easy to maintain.

@@ -1,60 +1,37 @@
-import {test,expect} from '@playwright/test';
+import { test, expect } from '@playwright/test';
+import { LoginPage } from '../pages/LoginPage';
+import { InventoryPage } from '../pages/InventoryPage';
 
-test('Valid Login Page', async ({page})=>{
+test('should login successfully with valid credentials', async ({ page }) => {
 
-    // step1 : open login page
-    await page.goto('https://practicetestautomation.com/practice-test-login/');
-    await expect (page).toHaveURL('https://practicetestautomation.com/practice-test-login/');
+    const loginPage = new LoginPage(page);
+    const inventoryPage = new InventoryPage(page);
 
-    // step2 : enter usename
-    await page.getByLabel('username').fill('student');
+    await page.goto('https://www.saucedemo.com/');
 
-    // step3 : enter password
-    await page.getByLabel('password').fill('Password123');
+    await loginPage.login(
+        'standard_user',
+        'secret_sauce'
+    );
 
-    // step4 : click on submit button
-    await page.getByRole('button', {name:'Submit'}).click();
+    await expect(inventoryPage.productsTitle).toBeVisible();
 
-    // step5 : verify that user is logged in successfully
-    await expect (page.getByText('Congratulations student. You successfully logged in!')).toBeVisible();
+    await inventoryPage.addProductToCart('sauce-labs-backpack');
+
+    await expect(inventoryPage.shoppingCartBadge).toHaveText('1');
 });
 
-test('InValid Login Page', async ({page})=>{
+test('should show error for invalid username', async ({ page }) => {
 
-    // step1 : open login page
-    await page.goto('https://practicetestautomation.com/practice-test-login/');
-    await expect (page).toHaveURL('https://practicetestautomation.com/practice-test-login/');
+    const loginPage = new LoginPage(page);
 
-    // step2 : enter usename
-    await page.getByLabel('username').fill('abc');
+    await page.goto('https://www.saucedemo.com/');
 
-    // step3 : enter password
-    await page.getByLabel('password').fill('Password123');
+    await loginPage.login(
+        'kirti',
+        'secret_sauce'
+    );
 
-    // step4 : click on submit button
-    await page.getByRole('button', {name:'Submit'}).click();
-
-    // step5 : verify that user is logged in successfully
-    await expect (page.locator('#error')).toBeVisible();
+    await expect(loginPage.errormsg).toBeVisible();
+    await expect(loginPage.errormsg).toContainText('Epic sadface');
 });
-
-test('Test Login Page', async ({page})=>{
-
-    // step1 : open login page
-    await page.goto('https://practicetestautomation.com/practice-test-login/');
-    await expect (page).toHaveURL('https://practicetestautomation.com/practice-test-login/');
-
-    // step2 : enter usename
-    await page.getByLabel('username').fill('abc');
-
-    // step3 : enter password
-    await page.getByLabel('password').fill('Password123');
-
-    // step4 : click on submit button
-    await page.getByRole('button', {name:'Submit'}).click();
-
-    // step5 : verify that user is logged in successfully
-    await expect (page.getByText('Congratulations student. You successfully logged in!')).toBeVisible();
-});
-
-
