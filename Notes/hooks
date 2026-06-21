@@ -1,0 +1,279 @@
+# Playwright Hooks (TypeScript) - Notes
+
+## What are Hooks?
+
+Hooks are special methods that run before or after test execution.
+
+They help reduce code duplication and manage setup/cleanup activities.
+
+Common uses:
+
+* Open application URL
+* Login before tests
+* Create test data
+* Delete test data
+* Logout after tests
+* Capture screenshots/logs
+
+---
+
+## Types of Hooks
+
+### 1. beforeEach()
+
+Runs before every test.
+
+### Syntax
+
+```ts
+test.beforeEach(async ({ page }) => {
+    await page.goto('https://www.saucedemo.com/');
+});
+```
+
+### Execution
+
+```text
+beforeEach
+Test 1
+
+beforeEach
+Test 2
+
+beforeEach
+Test 3
+```
+
+### Use Cases
+
+* Open application URL
+* Login before every test
+* Common setup required by all tests
+
+### Example
+
+```ts
+test.beforeEach(async ({ page }) => {
+    await page.goto('https://www.saucedemo.com/');
+});
+
+test('Valid Login', async ({ page }) => {
+    // Test logic
+});
+
+test('Invalid Login', async ({ page }) => {
+    // Test logic
+});
+```
+
+---
+
+## 2. afterEach()
+
+Runs after every test.
+
+### Syntax
+
+```ts
+test.afterEach(async () => {
+    console.log('Test Finished');
+});
+```
+
+### Execution
+
+```text
+beforeEach
+Test 1
+afterEach
+
+beforeEach
+Test 2
+afterEach
+```
+
+### Use Cases
+
+* Logout
+* Cleanup actions
+* Capture screenshots on failure
+* Close resources
+
+---
+
+## 3. beforeAll()
+
+Runs only once before all tests in a file.
+
+### Syntax
+
+```ts
+test.beforeAll(async () => {
+    console.log('Starting Test Execution');
+});
+```
+
+### Execution
+
+```text
+beforeAll
+
+Test 1
+Test 2
+Test 3
+```
+
+### Use Cases
+
+* Create test data
+* Environment setup
+* API setup
+* Database preparation
+
+---
+
+## 4. afterAll()
+
+Runs only once after all tests are completed.
+
+### Syntax
+
+```ts
+test.afterAll(async () => {
+    console.log('Execution Finished');
+});
+```
+
+### Execution
+
+```text
+beforeAll
+
+Test 1
+Test 2
+Test 3
+
+afterAll
+```
+
+### Use Cases
+
+* Delete test data
+* Generate reports
+* Cleanup environment
+* Close connections
+
+---
+
+## Complete Example
+
+```ts
+import { test, expect } from '@playwright/test';
+
+test.beforeAll(async () => {
+    console.log('Starting execution');
+});
+
+test.beforeEach(async ({ page }) => {
+    await page.goto('https://www.saucedemo.com/');
+});
+
+test('Test 1', async ({ page }) => {
+    // Test steps
+});
+
+test('Test 2', async ({ page }) => {
+    // Test steps
+});
+
+test.afterEach(async () => {
+    console.log('Test completed');
+});
+
+test.afterAll(async () => {
+    console.log('Execution finished');
+});
+```
+
+### Execution Order
+
+```text
+beforeAll
+
+beforeEach
+Test 1
+afterEach
+
+beforeEach
+Test 2
+afterEach
+
+afterAll
+```
+
+---
+
+## Difference Between beforeEach() and beforeAll()
+
+| beforeEach()            | beforeAll()           |
+| ----------------------- | --------------------- |
+| Runs before every test  | Runs only once        |
+| Executes multiple times | Executes one time     |
+| Used for test setup     | Used for global setup |
+
+### Example
+
+If there are 3 tests:
+
+```text
+beforeEach -> 3 times
+beforeAll -> 1 time
+```
+
+---
+
+## Difference Between afterEach() and afterAll()
+
+| afterEach()               | afterAll()                |
+| ------------------------- | ------------------------- |
+| Runs after every test     | Runs once after all tests |
+| Used for cleanup per test | Used for global cleanup   |
+
+### Example
+
+If there are 3 tests:
+
+```text
+afterEach -> 3 times
+afterAll -> 1 time
+```
+
+---
+
+## Interview Questions
+
+### What are Hooks in Playwright?
+
+Hooks are special methods used to perform setup and cleanup operations before or after test execution.
+
+### What are the four hooks in Playwright?
+
+* beforeEach()
+* afterEach()
+* beforeAll()
+* afterAll()
+
+### Difference between beforeEach and beforeAll?
+
+* beforeEach executes before every test.
+* beforeAll executes only once before all tests.
+
+### Why do we use Hooks?
+
+* Reduce duplicate code
+* Improve maintainability
+* Handle setup and cleanup efficiently
+
+### Which hook is most commonly used?
+
+beforeEach() is the most commonly used hook because most tests require common setup such as opening the application or logging in.

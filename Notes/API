@@ -1,0 +1,531 @@
+# API Testing Notes for QA & Automation Engineers
+
+# 1. What is an API?
+
+API (Application Programming Interface) is a bridge that allows different applications to communicate and exchange data with each other.
+
+It acts as an intermediary between the Frontend (UI) and Backend services.
+
+Without APIs, applications would not be able to request or receive data from servers.
+
+Example:
+
+```text
+User
+ ↓
+Frontend (UI)
+ ↓
+API Request
+ ↓
+Backend Server
+ ↓
+Database
+```
+
+Response Flow:
+
+```text
+Database
+ ↓
+Backend Server
+ ↓
+API Response
+ ↓
+Frontend (UI)
+ ↓
+User
+```
+
+Example:
+When a user logs into an application, the UI sends credentials to the backend through an API. The backend validates them against the database and returns a success or failure response.
+
+---
+
+# 2. Why Do We Need APIs?
+
+1. Enable communication between applications.
+2. Hide database implementation from users.
+3. Improve security.
+4. Support mobile, web, and third-party integrations.
+5. Allow data sharing across systems.
+
+---
+
+# 3. Request and Response
+
+API communication happens through Requests and Responses.
+
+## Request
+
+A request is sent from the client to the server asking for some action or data.
+
+Example:
+
+```http
+GET /users/1
+```
+
+## Response
+
+The server returns data and status information.
+
+Example:
+
+```json
+{
+  "id": 1,
+  "name": "John"
+}
+```
+
+---
+
+# 4. Client and Server
+
+## Client
+
+The system that sends requests.
+
+Examples:
+
+* Browser
+* Mobile App
+* Automation Script
+
+## Server
+
+The system that receives requests, processes them, and sends responses.
+
+---
+
+# 5. API Endpoint
+
+An endpoint is a URL where an API can be accessed.
+
+Example:
+
+```text
+https://api.company.com/users
+```
+
+Here:
+
+```text
+/users
+```
+
+is the endpoint.
+
+---
+
+# 6. HTTP Methods
+
+HTTP methods define the action to be performed.
+
+## GET
+
+Used to retrieve data.
+
+Example:
+
+```http
+GET /users
+```
+
+Use Cases:
+
+* Fetch user details
+* Retrieve product lists
+* Get order history
+
+---
+
+## POST
+
+Used to create new data.
+
+Example:
+
+```http
+POST /users
+```
+
+Use Cases:
+
+* Create account
+* Login
+* Add records
+
+---
+
+## PUT
+
+Used to update existing data completely.
+
+Example:
+
+```http
+PUT /users/1
+```
+
+Use Cases:
+
+* Update profile
+* Update address
+
+---
+
+## PATCH
+
+Used to partially update data.
+
+Example:
+
+```http
+PATCH /users/1
+```
+
+Use Cases:
+
+* Update email only
+* Change phone number
+
+---
+
+## DELETE
+
+Used to remove data.
+
+Example:
+
+```http
+DELETE /users/1
+```
+
+Use Cases:
+
+* Delete account
+* Remove records
+
+---
+
+# 7. HTTP Status Codes
+
+Status codes indicate the result of a request.
+
+## 2xx Success
+
+### 200 OK
+
+Request successful.
+
+### 201 Created
+
+Resource created successfully.
+
+### 204 No Content
+
+Request successful but no data returned.
+
+---
+
+## 4xx Client Errors
+
+### 400 Bad Request
+
+Invalid request.
+
+### 401 Unauthorized
+
+Authentication required.
+
+### 403 Forbidden
+
+Access denied.
+
+### 404 Not Found
+
+Resource does not exist.
+
+---
+
+## 5xx Server Errors
+
+### 500 Internal Server Error
+
+Server failure.
+
+### 502 Bad Gateway
+
+Invalid response from another server.
+
+### 503 Service Unavailable
+
+Server temporarily unavailable.
+
+---
+
+# 8. Headers
+
+Headers contain metadata about requests and responses.
+
+Examples:
+
+```http
+Content-Type: application/json
+Authorization: Bearer token
+Accept: application/json
+```
+
+Uses:
+
+* Authentication
+* Data format
+* Content negotiation
+
+---
+
+# 9. Authentication
+
+Authentication verifies user identity.
+
+Common Types:
+
+## Basic Authentication
+
+Uses username and password.
+
+## Bearer Token Authentication
+
+Uses access tokens.
+
+Example:
+
+```http
+Authorization: Bearer eyJhbGci...
+```
+
+Most commonly used in modern APIs.
+
+---
+
+# 10. JSON
+
+JSON (JavaScript Object Notation) is the most common API data format.
+
+Example:
+
+```json
+{
+  "id": 1,
+  "name": "Kirti",
+  "city": "Gurgaon"
+}
+```
+
+JSON consists of:
+
+* Keys
+* Values
+
+---
+
+# 11. Query Parameters
+
+Used to filter or search data.
+
+Example:
+
+```http
+GET /users?page=2
+```
+
+Here:
+
+```text
+page=2
+```
+
+is a query parameter.
+
+Multiple Parameters:
+
+```http
+GET /users?page=2&status=active
+```
+
+---
+
+# 12. Path Parameters
+
+Used to identify a specific resource.
+
+Example:
+
+```http
+GET /users/1
+```
+
+Here:
+
+```text
+1
+```
+
+is a path parameter.
+
+---
+
+# 13. API Testing
+
+API Testing verifies:
+
+1. Functionality
+2. Reliability
+3. Performance
+4. Security
+
+Checks include:
+
+* Status Code Validation
+* Response Validation
+* Header Validation
+* Schema Validation
+* Authentication Validation
+
+---
+
+# 14. What Do QA Engineers Validate?
+
+## Status Code
+
+Expected:
+
+```text
+200
+```
+
+Actual:
+
+```text
+200
+```
+
+Pass
+
+---
+
+## Response Body
+
+Verify returned data.
+
+Example:
+
+```json
+{
+  "name": "John"
+}
+```
+
+Check:
+
+* Name exists
+* Correct value returned
+
+---
+
+## Headers
+
+Verify:
+
+```text
+Content-Type
+Authorization
+Cache-Control
+```
+
+---
+
+## Response Time
+
+Ensure APIs respond within acceptable limits.
+
+Example:
+
+```text
+< 2 seconds
+```
+
+---
+
+# 15. Difference Between GET and POST
+
+GET:
+
+* Retrieves data
+* Data visible in URL
+* Generally safe
+* No data creation
+
+POST:
+
+* Creates data
+* Data sent in request body
+* More secure
+* Creates resources
+
+---
+
+# 16. Common Interview Questions
+
+Q. What is an API?
+
+Answer:
+An API is an interface that allows different software applications to communicate and exchange data with each other.
+
+---
+
+Q. What is the difference between Request and Response?
+
+Answer:
+A request is sent by the client to the server, while a response is returned by the server to the client.
+
+---
+
+Q. What are HTTP methods?
+
+Answer:
+GET, POST, PUT, PATCH, DELETE.
+
+---
+
+Q. What is the difference between PUT and PATCH?
+
+Answer:
+PUT updates the entire resource, while PATCH updates only specific fields.
+
+---
+
+Q. What is JSON?
+
+Answer:
+JSON is a lightweight data-interchange format used to exchange data between client and server.
+
+---
+
+Q. What validations are performed during API Testing?
+
+Answer:
+
+* Status Code Validation
+* Response Body Validation
+* Header Validation
+* Authentication Validation
+* Response Time Validation
+
+---
+
+Q. What are the most commonly used status codes?
+
+Answer:
+200, 201, 400, 401, 403, 404, 500.
