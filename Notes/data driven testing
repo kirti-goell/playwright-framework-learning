@@ -1,0 +1,333 @@
+# Data-Driven Testing in Playwright
+
+## What is Data-Driven Testing?
+
+Data-Driven Testing is a testing technique where the same test is executed multiple times using different sets of test data.
+
+Instead of creating separate test cases for each user or scenario, we keep the test logic the same and only change the input data.
+
+--------------------------------------------------
+
+## Why Do We Use Data-Driven Testing?
+
+Benefits:
+
+- Reduces duplicate code
+- Improves maintainability
+- Increases reusability
+- Easy to add new test data
+- Supports multiple test scenarios
+
+--------------------------------------------------
+
+## Without Data-Driven Testing
+
+test('Login with standard user', async ({ page }) => {
+
+});
+
+test('Login with problem user', async ({ page }) => {
+
+});
+
+test('Login with error user', async ({ page }) => {
+
+});
+
+Problem:
+
+- Same login steps repeated
+- More code
+- Difficult maintenance
+
+--------------------------------------------------
+
+## With Data-Driven Testing
+
+Create test data:
+
+const users = [
+
+{
+    username: 'standard_user',
+    password: 'secret_sauce'
+},
+
+{
+    username: 'problem_user',
+    password: 'secret_sauce'
+},
+
+{
+    username: 'error_user',
+    password: 'secret_sauce'
+}
+
+];
+
+Use a loop:
+
+for(const user of users) {
+
+    test(`Login with ${user.username}`, async ({ page }) => {
+
+        // Login steps
+
+    });
+
+}
+
+--------------------------------------------------
+
+## Complete Example
+
+import { test, expect } from '@playwright/test';
+
+const users = [
+
+{
+    username: 'standard_user',
+    password: 'secret_sauce'
+},
+
+{
+    username: 'problem_user',
+    password: 'secret_sauce'
+},
+
+{
+    username: 'error_user',
+    password: 'secret_sauce'
+}
+
+];
+
+for(const user of users) {
+
+    test(`Login with ${user.username}`, async ({ page }) => {
+
+        await page.goto('https://www.saucedemo.com/');
+
+        await page.locator('#user-name')
+            .fill(user.username);
+
+        await page.locator('#password')
+            .fill(user.password);
+
+        await page.locator('#login-button')
+            .click();
+
+        await expect(
+            page.locator('[data-test="title"]')
+        ).toHaveText('Products');
+
+    });
+
+}
+
+--------------------------------------------------
+
+## How It Works
+
+Data:
+
+const users = [
+
+{
+    username: 'standard_user',
+    password: 'secret_sauce'
+},
+
+{
+    username: 'problem_user',
+    password: 'secret_sauce'
+}
+
+];
+
+Loop:
+
+for(const user of users)
+
+Iteration 1:
+
+user.username = standard_user
+
+Creates test:
+
+Login with standard_user
+
+--------------------------------------------------
+
+Iteration 2:
+
+user.username = problem_user
+
+Creates test:
+
+Login with problem_user
+
+--------------------------------------------------
+
+Result:
+
+Playwright creates separate tests automatically using the same logic but different data.
+
+--------------------------------------------------
+
+## Why Array of Objects?
+
+Because each user can have multiple properties.
+
+Example:
+
+{
+    username: 'standard_user',
+    password: 'secret_sauce'
+}
+
+Object can store:
+
+- username
+- password
+- role
+- expected result
+- error message
+
+--------------------------------------------------
+
+## Advanced Example
+
+const users = [
+
+{
+    username: 'standard_user',
+    password: 'secret_sauce',
+    expected: 'success'
+},
+
+{
+    username: 'locked_out_user',
+    password: 'secret_sauce',
+    expected: 'failure'
+}
+
+];
+
+This allows us to validate different outcomes.
+
+--------------------------------------------------
+
+## TypeScript Concepts Used
+
+1. Arrays
+
+const users = [];
+
+2. Objects
+
+{
+    username: '',
+    password: ''
+}
+
+3. for...of Loop
+
+for(const user of users)
+
+--------------------------------------------------
+
+## Real-Life Use Cases
+
+- Login testing with multiple users
+- Registration testing
+- API testing with multiple payloads
+- Search testing with multiple inputs
+- Form validation testing
+
+--------------------------------------------------
+
+## Interview Questions
+
+Q. What is Data-Driven Testing?
+
+Data-Driven Testing is a technique where the same test is executed multiple times using different sets of test data.
+
+--------------------------------------------------
+
+Q. Why do we use Data-Driven Testing?
+
+- Reduces duplicate code
+- Improves maintainability
+- Increases reusability
+- Supports multiple scenarios
+
+--------------------------------------------------
+
+Q. Which TypeScript concepts are commonly used in Data-Driven Testing?
+
+- Arrays
+- Objects
+- for...of Loop
+
+--------------------------------------------------
+
+Q. Which loop is most commonly used?
+
+for...of
+
+Example:
+
+for(const user of users)
+
+--------------------------------------------------
+
+## Quick Revision
+
+DATA-DRIVEN TESTING
+
+Definition:
+Run same test with different data sets.
+
+Benefits:
+- Reusable
+- Less code
+- Easy maintenance
+- Better scalability
+
+Common Concepts Used:
+- Arrays
+- Objects
+- for...of Loop
+
+Common Structure:
+
+const users = [
+
+{
+    username:'user1',
+    password:'pass1'
+},
+
+{
+    username:'user2',
+    password:'pass2'
+}
+
+];
+
+for(const user of users) {
+
+    test(`Login with ${user.username}`, async ({ page }) => {
+
+        // Test Steps
+
+    });
+
+}
+
+Most Common Use Cases:
+- Multiple Users
+- Multiple Test Data
+- Login Testing
+- API Payload Testing

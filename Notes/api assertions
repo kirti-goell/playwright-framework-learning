@@ -1,0 +1,459 @@
+=========================
+API ASSERTIONS
+=========================
+
+What are Assertions?
+
+Assertions are validations used to verify whether the actual API response matches the expected result.
+
+Simple Meaning:
+
+Assertion = Verification/Check
+
+We send an API request and then verify:
+
+- Is the status code correct?
+- Is the response body correct?
+- Is the response header correct?
+- Is the required data present?
+
+If validation passes:
+✓ Test Passes
+
+If validation fails:
+✗ Test Fails
+
+----------------------------------
+
+Real-Life Example
+
+Suppose you order a pizza.
+
+Expected:
+- Pizza delivered
+- Correct size
+- Correct toppings
+
+Actual:
+- Pizza delivered
+- Correct size
+- Correct toppings
+
+Result:
+✓ Validation Passed
+
+Similarly in API Testing:
+
+Expected:
+Status = 200
+
+Actual:
+Status = 200
+
+Result:
+✓ Assertion Passed
+
+----------------------------------
+
+Why are Assertions Important?
+
+Without assertions:
+
+The API may return wrong data and the test will still pass.
+
+Example:
+
+const response = await request.get(url);
+
+Without assertions:
+
+The test only sends a request.
+
+It never verifies the response.
+
+Therefore assertions are mandatory.
+
+----------------------------------
+
+Types of API Assertions
+
+1. Status Code Assertions
+2. Response Body Assertions
+3. Header Assertions
+4. Array Assertions
+5. Property Assertions
+
+----------------------------------
+
+1. Status Code Assertions
+
+Verify API returned the correct status.
+
+Example:
+
+expect(response.status()).toBe(200);
+
+Meaning:
+
+Verify request was successful.
+
+----------------------------------
+
+Common Status Assertions
+
+expect(response.status()).toBe(200);
+
+expect(response.status()).toBe(201);
+
+expect(response.status()).toBe(404);
+
+expect(response.status()).toBe(500);
+
+----------------------------------
+
+2. Response Body Assertions
+
+Verify response data.
+
+Example Response:
+
+{
+   "id": 1,
+   "title": "sample title"
+}
+
+Assertions:
+
+expect(body.id).toBe(1);
+
+expect(body.title)
+.toBe('sample title');
+
+----------------------------------
+
+3. Property Assertions
+
+Verify a property exists.
+
+Example:
+
+expect(body)
+.toHaveProperty('id');
+
+Meaning:
+
+Verify id field exists.
+
+----------------------------------
+
+Verify Nested Property
+
+expect(body)
+.toHaveProperty('title');
+
+----------------------------------
+
+4. Defined Assertions
+
+Verify value exists.
+
+Example:
+
+expect(body.id)
+.toBeDefined();
+
+Meaning:
+
+Verify id is not undefined.
+
+----------------------------------
+
+Example:
+
+expect(body.title)
+.toBeDefined();
+
+----------------------------------
+
+5. String Assertions
+
+Verify text content.
+
+Example:
+
+expect(body.title)
+.toContain('sample');
+
+Meaning:
+
+Verify title contains word sample.
+
+----------------------------------
+
+Example:
+
+expect(body.title)
+.toMatch('sample');
+
+----------------------------------
+
+6. Boolean Assertions
+
+Example:
+
+expect(body.completed)
+.toBe(true);
+
+Meaning:
+
+Verify task is completed.
+
+----------------------------------
+
+7. Array Assertions
+
+Example Response:
+
+{
+   "data":[
+      {},
+      {},
+      {}
+   ]
+}
+
+Verify array has records:
+
+expect(body.data.length)
+.toBeGreaterThan(0);
+
+Meaning:
+
+Verify at least one record exists.
+
+----------------------------------
+
+Verify Exact Count
+
+expect(body.data.length)
+.toBe(6);
+
+Meaning:
+
+Verify exactly 6 records exist.
+
+----------------------------------
+
+8. Numeric Assertions
+
+Verify numbers.
+
+Example:
+
+expect(body.id)
+.toBe(1);
+
+----------------------------------
+
+Greater Than
+
+expect(body.id)
+.toBeGreaterThan(0);
+
+----------------------------------
+
+Less Than
+
+expect(body.id)
+.toBeLessThan(100);
+
+----------------------------------
+
+9. Header Assertions
+
+Verify response headers.
+
+Example:
+
+const headers =
+response.headers();
+
+expect(headers['content-type'])
+.toContain('application/json');
+
+Meaning:
+
+Verify response is JSON.
+
+----------------------------------
+
+Most Common Assertions Used In Projects
+
+1.
+
+expect(response.status())
+.toBe(200);
+
+----------------------------------
+
+2.
+
+expect(body.id)
+.toBe(1);
+
+----------------------------------
+
+3.
+
+expect(body)
+.toHaveProperty('id');
+
+----------------------------------
+
+4.
+
+expect(body.id)
+.toBeDefined();
+
+----------------------------------
+
+5.
+
+expect(body.title)
+.toContain('sample');
+
+----------------------------------
+
+6.
+
+expect(body.data.length)
+.toBeGreaterThan(0);
+
+----------------------------------
+
+7.
+
+expect(headers['content-type'])
+.toContain('application/json');
+
+----------------------------------
+
+Complete Example
+
+import { test, expect }
+from '@playwright/test';
+
+test('API Assertions',
+async ({ request }) => {
+
+const response =
+await request.get(
+'https://jsonplaceholder.typicode.com/posts/1'
+);
+
+expect(response.status())
+.toBe(200);
+
+const body =
+await response.json();
+
+expect(body.id)
+.toBe(1);
+
+expect(body)
+.toHaveProperty('title');
+
+expect(body.title)
+.toBeDefined();
+
+expect(body.title.length)
+.toBeGreaterThan(0);
+
+const headers =
+response.headers();
+
+expect(headers['content-type'])
+.toContain('application/json');
+
+});
+
+----------------------------------
+
+Interview Questions
+
+Q. What are Assertions?
+
+Assertions are validations used to compare actual results with expected results.
+
+----------------------------------
+
+Q. Why are Assertions Important?
+
+Assertions verify that the API is returning correct data.
+
+Without assertions, a test only sends requests and does not validate results.
+
+----------------------------------
+
+Q. What types of Assertions have you used?
+
+- Status Code Assertions
+- Response Body Assertions
+- Property Assertions
+- Header Assertions
+- Array Assertions
+
+----------------------------------
+
+Q. How do you verify a property exists?
+
+expect(body)
+.toHaveProperty('id');
+
+----------------------------------
+
+Q. How do you verify an array contains data?
+
+expect(body.data.length)
+.toBeGreaterThan(0);
+
+----------------------------------
+
+Q. How do you verify a response header?
+
+expect(headers['content-type'])
+.toContain('application/json');
+
+----------------------------------
+
+Important Revision Points
+
+✓ Assertions validate API responses.
+✓ Assertions compare expected vs actual results.
+✓ Status code validation is mandatory.
+✓ Response body validation is mandatory.
+✓ Header validation is commonly used.
+✓ toBe() checks exact values.
+✓ toContain() checks partial text.
+✓ toHaveProperty() verifies field existence.
+✓ toBeDefined() verifies value exists.
+✓ toBeGreaterThan(0) verifies array is not empty.
+
+
+
+most important assertions:
+
+expect(response.status()).toBe(200);
+
+expect(body.id).toBe(1);
+
+expect(body).toHaveProperty('id');
+
+expect(body.id).toBeDefined();
+
+expect(body.title).toContain('sample');
+
+expect(body.data.length).toBeGreaterThan(0);
+
+expect(headers['content-type'])
+  .toContain('application/json');

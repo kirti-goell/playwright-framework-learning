@@ -11,13 +11,24 @@ import {test,expect} from '@playwright/test';
 test('Get posts',async({request})=>{
 
     const response = await request.get( // response is http response object
-        'https://jsonplaceholder.typicode.com/posts/1'
+        'https://jsonplaceholder.typicode.com/posts/1',
+        {
+            headers:{
+                'Accept':'application/json'   // accept kyunki hum data get kr rhe hai
+            }
+        }
     );
     expect (response.status()).toBe(200);
     // convert the response into json
     const body = await response.json();
     expect (body.id).toBe(1);
     console.log(body);
+
+    const header = response.headers();
+    expect (header['content-type']).toContain('application/json');
+    //expect (header['content-length']).toBeDefined();   // jruri nhi h sabhi response me content length ho
+    expect (header['server']).toBeDefined();
+    console.log(header);
 
 });
 
@@ -54,13 +65,13 @@ test('Create post',async({request})=>{
     expect (body.id).toBeDefined();
 });
 
-// How do you automate a PUT request in Playwright?
-// Send request using request.put()
-// Pass updated data in request body
-// Store response
-// Validate status code
-// Convert response to JSON
-// Validate updated fields
+// // How do you automate a PUT request in Playwright?
+// // Send request using request.put()
+// // Pass updated data in request body
+// // Store response
+// // Validate status code
+// // Convert response to JSON
+// // Validate updated fields
 
 
 test('Update post',async({request})=>{

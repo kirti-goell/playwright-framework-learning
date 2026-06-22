@@ -1,0 +1,468 @@
+// # Loops in TypeScript
+
+// ## What is a Loop?
+
+// A loop is used to execute the same block of code multiple times without writing it repeatedly.
+
+// Example:
+
+// Without Loop:
+
+// console.log('Kirti');
+// console.log('Kirti');
+// console.log('Kirti');
+
+// With Loop:
+
+// for(let i = 1; i <= 3; i++) {
+//     console.log('Kirti');
+// }
+
+// Output:
+
+// Kirti
+// Kirti
+// Kirti
+
+// --------------------------------------------------
+
+// ## Why Do We Use Loops?
+
+// Loops help when:
+
+// - Working with arrays
+// - Running repetitive tasks
+// - Processing multiple users
+// - Data-Driven Testing
+// - Reading multiple records
+
+// Instead of:
+
+// console.log(users[0]);
+// console.log(users[1]);
+// console.log(users[2]);
+
+// We use:
+
+// for(const user of users) {
+//     console.log(user);
+// }
+
+// --------------------------------------------------
+
+// ## Types of Loops in TypeScript
+
+// 1. for Loop
+// 2. for...of Loop
+// 3. while Loop
+
+// --------------------------------------------------
+
+// # 1. for Loop
+
+// Used when we know exactly how many times we want the loop to run.
+
+// Syntax:
+
+// for(initialization; condition; increment) {
+
+// }
+
+// Example:
+
+// for(let i = 1; i <= 5; i++) {
+//     console.log(i);
+// }
+
+// Output:
+
+// 1
+// 2
+// 3
+// 4
+// 5
+
+// --------------------------------------------------
+
+// ## Understanding Each Part
+
+// Initialization
+
+// let i = 1
+
+// Starting value.
+
+// Condition
+
+// i <= 5
+
+// Loop runs while this condition is true.
+
+// Increment
+
+// i++
+
+// Increases value by 1 after each iteration.
+
+// --------------------------------------------------
+
+// ## Flow
+
+// i = 1
+// ↓
+// Condition true
+// ↓
+// Execute code
+// ↓
+// i++
+// ↓
+// Condition true
+// ↓
+// Execute code
+// ↓
+// Repeat
+
+// --------------------------------------------------
+
+// Example
+
+// for(let i = 1; i <= 3; i++) {
+//     console.log(`Test Run ${i}`);
+// }
+
+// Output:
+
+// Test Run 1
+// Test Run 2
+// Test Run 3
+
+// --------------------------------------------------
+
+// # 2. for...of Loop (Most Important for Automation)
+
+// Used to iterate through arrays.
+
+// Syntax:
+
+// for(const item of array) {
+
+// }
+
+// Example:
+
+// const users = [
+//     'standard_user',
+//     'locked_out_user',
+//     'problem_user'
+// ];
+
+// for(const user of users) {
+//     console.log(user);
+// }
+
+// Output:
+
+// standard_user
+// locked_out_user
+// problem_user
+
+// --------------------------------------------------
+
+// ## How It Works
+
+// const users = ['A', 'B', 'C'];
+
+// Iteration 1:
+// user = 'A'
+
+// Iteration 2:
+// user = 'B'
+
+// Iteration 3:
+// user = 'C'
+
+// --------------------------------------------------
+
+// ## Array of Objects Example
+
+// const users = [
+
+// {
+//     username:'standard_user',
+//     password:'secret_sauce'
+// },
+
+// {
+//     username:'problem_user',
+//     password:'secret_sauce'
+// }
+
+// ];
+
+// for(const user of users) {
+
+//     console.log(user.username);
+
+// }
+
+// Output:
+
+// standard_user
+// problem_user
+
+// --------------------------------------------------
+
+// ## Automation Example
+
+// for(const user of users) {
+
+//     await loginPage.login(
+//         user.username,
+//         user.password
+//     );
+
+// }
+
+// This concept is used in Data-Driven Testing.
+
+// --------------------------------------------------
+
+// # Difference Between for and for...of
+
+// for Loop:
+
+// const users = ['A','B','C'];
+
+// for(let i = 0; i < users.length; i++) {
+//     console.log(users[i]);
+// }
+
+// Uses indexes.
+
+// --------------------------------------------------
+
+// for...of Loop:
+
+// for(const user of users) {
+//     console.log(user);
+// }
+
+// Directly gives values.
+
+// Preferred because it is cleaner and easier to read.
+
+// --------------------------------------------------
+
+// # 3. while Loop
+
+// Runs as long as a condition remains true.
+
+// Syntax:
+
+// while(condition) {
+
+// }
+
+// Example:
+
+// let i = 1;
+
+// while(i <= 5) {
+
+//     console.log(i);
+
+//     i++;
+// }
+
+// Output:
+
+// 1
+// 2
+// 3
+// 4
+// 5
+
+// --------------------------------------------------
+
+// ## How It Works
+
+// i = 1
+// ↓
+// Condition checked
+// ↓
+// Code executes
+// ↓
+// i increases
+// ↓
+// Condition checked again
+// ↓
+// Repeat
+
+// --------------------------------------------------
+
+// # Infinite Loop
+
+// Wrong Example:
+
+// let i = 1;
+
+// while(i <= 5) {
+//     console.log(i);
+// }
+
+// Problem:
+
+// i never changes.
+
+// The condition remains true forever.
+
+// --------------------------------------------------
+
+// Correct Example:
+
+// let i = 1;
+
+// while(i <= 5) {
+
+//     console.log(i);
+
+//     i++;
+// }
+
+// --------------------------------------------------
+
+// # Which Loop Should Be Used?
+
+// Use for Loop
+
+// When number of iterations is known.
+
+// Example:
+
+// for(let i = 1; i <= 10; i++)
+
+// --------------------------------------------------
+
+// Use for...of Loop
+
+// When working with arrays.
+
+// Example:
+
+// for(const user of users)
+
+// Most commonly used in Playwright.
+
+// --------------------------------------------------
+
+// Use while Loop
+
+// When number of iterations is unknown.
+
+// Example:
+
+// while(condition)
+
+// Less common in Playwright automation.
+
+// --------------------------------------------------
+
+// # Real Playwright Usage
+
+// Data-Driven Testing
+
+// const users = [
+
+// {
+//     username:'standard_user',
+//     password:'secret_sauce'
+// },
+
+// {
+//     username:'problem_user',
+//     password:'secret_sauce'
+// }
+
+// ];
+
+// for(const user of users) {
+
+//     test(`Login with ${user.username}`, async ({ page }) => {
+
+//         // Login code
+
+//     });
+
+// }
+
+// --------------------------------------------------
+
+// # Interview Questions
+
+// Q. What is a loop?
+
+// A loop is used to execute a block of code repeatedly until a condition becomes false.
+
+// --------------------------------------------------
+
+// Q. Types of loops in TypeScript?
+
+// 1. for
+// 2. for...of
+// 3. while
+
+// --------------------------------------------------
+
+// Q. Which loop is most commonly used in Playwright?
+
+// for...of
+
+// Because it is used to iterate through arrays and test data.
+
+// --------------------------------------------------
+
+// Q. Difference between for and for...of?
+
+// for
+// → Uses indexes
+
+// for...of
+// → Directly gives values from array
+
+// --------------------------------------------------
+
+// # Quick Revision
+
+// LOOPS
+
+// Purpose:
+// Repeat code multiple times
+
+// Types:
+
+// 1. for
+//    Used when number of iterations is known
+
+// 2. for...of
+//    Used with arrays
+//    Most important for Playwright
+
+// 3. while
+//    Used when iterations are unknown
+
+// Most Used in Automation:
+// for...of
+
+// Common Uses:
+// - Arrays
+// - Test Data
+// - Multiple Users
+// - Data Driven Testing
+
+// Difference:
+
+// for
+// → Uses index
+
+// for...of
+// → Gives values directly

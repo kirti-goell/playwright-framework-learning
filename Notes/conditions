@@ -1,0 +1,23 @@
+// Conditions
+
+// 1. if
+// 2. if else
+// 3. else if
+// 4. switch
+
+// Comparison Operators
+
+// === Equal
+// !== Not Equal
+// > Greater Than
+// < Less Than
+// >= Greater Than Equal
+// <= Less Than Equal
+
+// Automation Examples
+
+// if(statusCode === 200)
+
+// if(response.ok())
+
+// switch(statusCode)

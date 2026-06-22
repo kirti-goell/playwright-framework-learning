@@ -1,0 +1,815 @@
+=========================
+QUERY PARAMETERS
+================
+
+What are Query Parameters?
+
+Query parameters are key-value pairs added to a URL after the "?" symbol.
+
+They are used to send additional information to the server without changing the actual resource path.
+
+Purpose:
+
+* Filtering data
+* Searching data
+* Sorting data
+* Pagination
+* Passing optional information
+
+---
+
+Real-Life Example
+
+Suppose an e-commerce website has 1000 products.
+
+Without query parameters:
+
+/products
+
+This returns all products.
+
+Using query parameters:
+
+/products?category=mobile
+
+Meaning:
+
+Return only mobile products.
+
+---
+
+URL Structure
+
+Example:
+
+https://reqres.in/api/users?page=2
+
+Breakdown:
+
+Base URL:
+https://reqres.in
+
+Resource:
+/api/users
+
+Query Parameter:
+?page=2
+
+Parameter Name:
+page
+
+Parameter Value:
+2
+
+---
+
+Syntax Rules
+
+1. Query parameters always start with "?"
+
+Example:
+
+/users?page=2
+
+2. Multiple query parameters are separated by "&"
+
+Example:
+
+/users?page=2&limit=5
+
+Meaning:
+
+page = 2
+limit = 5
+
+---
+
+Why are Query Parameters Used?
+
+Query parameters help retrieve specific data instead of all available data.
+
+Benefits:
+
+* Faster responses
+* Less data transfer
+* Better filtering
+* Easier searching
+* Supports pagination
+
+---
+
+Common Uses of Query Parameters
+
+1. Pagination
+
+Example:
+
+/users?page=2
+
+Meaning:
+
+Return users from page 2.
+
+---
+
+2. Searching
+
+Example:
+
+/products?name=iphone
+
+Meaning:
+
+Search products with name iphone.
+
+---
+
+3. Filtering
+
+Example:
+
+/orders?status=completed
+
+Meaning:
+
+Return only completed orders.
+
+---
+
+4. Sorting
+
+Example:
+
+/products?sort=price
+
+Meaning:
+
+Sort products by price.
+
+---
+
+5. Multiple Conditions
+
+Example:
+
+/products?category=mobile&brand=samsung
+
+Meaning:
+
+Return Samsung mobile products.
+
+---
+
+Query Parameters vs Path Parameters
+
+Query Parameter Example:
+
+/users?page=2
+
+Used for:
+
+* Filtering
+* Searching
+* Sorting
+* Pagination
+
+---
+
+Path Parameter Example:
+
+/users/2
+
+Used for:
+
+* Identifying a specific resource
+
+Meaning:
+
+Get user whose id is 2.
+
+---
+
+Playwright API Example
+
+import { test, expect } from '@playwright/test';
+
+test('Get Users from Page 2', async ({ request }) => {
+
+```
+const response = await request.get(
+    'https://reqres.in/api/users?page=2'
+);
+
+expect(response.status()).toBe(200);
+
+const body = await response.json();
+
+expect(body.page).toBe(2);
+```
+
+});
+
+---
+
+Explanation of Code
+
+Step 1:
+
+Send GET request.
+
+const response = await request.get(
+'https://reqres.in/api/users?page=2'
+);
+
+Meaning:
+
+Request users from page 2.
+
+---
+
+Step 2:
+
+Validate status code.
+
+expect(response.status()).toBe(200);
+
+Meaning:
+
+API call was successful.
+
+---
+
+Step 3:
+
+Convert response into JSON.
+
+const body = await response.json();
+
+Meaning:
+
+Access actual response data.
+
+---
+
+Step 4:
+
+Validate query parameter result.
+
+expect(body.page).toBe(2);
+
+Meaning:
+
+Verify API returned data for page 2.
+
+---
+
+Sample API Response
+
+{
+"page": 2,
+"per_page": 6,
+"total": 12,
+"total_pages": 2,
+"data": [
+{
+"id": 7,
+"first_name": "Michael"
+}
+]
+}
+
+Validations:
+
+expect(body.page).toBe(2);
+
+expect(body.data.length)
+.toBeGreaterThan(0);
+
+expect(body.data[0].id)
+.toBeDefined();
+
+---
+
+Common Assertions
+
+Validate page:
+
+expect(body.page).toBe(2);
+
+Validate data exists:
+
+expect(body.data.length)
+.toBeGreaterThan(0);
+
+Validate user id exists:
+
+expect(body.data[0].id)
+.toBeDefined();
+
+Validate user name:
+
+expect(body.data[0].first_name)
+.toBe('Michael');
+
+---
+
+Interview Questions
+
+Q. What are Query Parameters?
+
+Query parameters are key-value pairs added after "?" in a URL to send additional information to the server.
+
+They are commonly used for filtering, searching, sorting, and pagination.
+
+Example:
+
+/users?page=2
+
+---
+
+Q. How are multiple query parameters passed?
+
+Using "&".
+
+Example:
+
+/users?page=2&limit=5
+
+---
+
+Q. What is the purpose of query parameters?
+
+To retrieve specific data without changing the resource path.
+
+---
+
+Q. What symbol starts query parameters?
+
+?
+
+---
+
+Q. What symbol separates multiple query parameters?
+
+&
+
+---
+
+Q. Give examples of query parameter use cases.
+
+* Pagination
+* Searching
+* Filtering
+* Sorting
+
+---
+
+QA Perspective
+
+While testing APIs using query parameters, verify:
+
+1. Status Code
+
+expect(response.status()).toBe(200);
+
+2. Response Data
+
+expect(body.page).toBe(2);
+
+3. Data Presence
+
+expect(body.data.length)
+.toBeGreaterThan(0);
+
+4. Returned Data Accuracy
+
+Verify the API returns data according to the provided query parameter.
+
+---
+
+Important Revision Points
+
+✓ Query parameters are key-value pairs.
+✓ Query parameters start with ?.
+✓ Multiple query parameters are separated by &.
+✓ Used for filtering, searching, sorting, and pagination.
+✓ Do not identify a specific resource.
+✓ Query parameters are optional.
+✓ Common example: ?page=2
+✓ Validate query parameter values through response assertions.
+
+
+
+=========================
+PATH PARAMETERS
+===============
+
+What are Path Parameters?
+
+Path parameters are values that are part of the URL path and are used to identify a specific resource.
+
+They are mandatory and directly form part of the resource path.
+
+Purpose:
+
+* Identify a specific record
+* Retrieve a specific resource
+* Update a specific resource
+* Delete a specific resource
+
+---
+
+Real-Life Example
+
+Suppose a website has thousands of users.
+
+To get details of a specific user:
+
+/users/5
+
+Meaning:
+
+Get user whose ID is 5.
+
+Here:
+
+5 = Path Parameter
+
+---
+
+URL Structure
+
+Example:
+
+https://jsonplaceholder.typicode.com/posts/1
+
+Breakdown:
+
+Base URL:
+https://jsonplaceholder.typicode.com
+
+Resource:
+posts
+
+Path Parameter:
+1
+
+Meaning:
+
+Get post whose ID is 1.
+
+---
+
+Why are Path Parameters Used?
+
+Path parameters help uniquely identify a resource.
+
+Examples:
+
+/users/10
+/products/25
+/orders/1001
+
+Each URL points to a specific resource.
+
+---
+
+Common Uses of Path Parameters
+
+1. Get Specific User
+
+/users/5
+
+Meaning:
+
+Get user with ID 5.
+
+---
+
+2. Get Specific Product
+
+/products/20
+
+Meaning:
+
+Get product with ID 20.
+
+---
+
+3. Update Specific User
+
+PUT /users/5
+
+Meaning:
+
+Update user with ID 5.
+
+---
+
+4. Delete Specific User
+
+DELETE /users/5
+
+Meaning:
+
+Delete user with ID 5.
+
+---
+
+Path Parameters vs Query Parameters
+
+Path Parameter Example:
+
+/users/5
+
+Purpose:
+
+Identify a specific resource.
+
+---
+
+Query Parameter Example:
+
+/users?page=2
+
+Purpose:
+
+Filter, search, sort, or paginate data.
+
+---
+
+Key Difference
+
+Path Parameters:
+
+* Mandatory
+* Identify a specific resource
+* Part of URL path
+
+Query Parameters:
+
+* Optional
+* Filter or modify results
+* Added after ?
+
+---
+
+Playwright API Example
+
+import { test, expect } from '@playwright/test';
+
+test('Get Post By ID', async ({ request }) => {
+
+```
+const response = await request.get(
+    'https://jsonplaceholder.typicode.com/posts/1'
+);
+
+expect(response.status()).toBe(200);
+
+const body = await response.json();
+
+expect(body.id).toBe(1);
+```
+
+});
+
+---
+
+Explanation of Code
+
+Step 1:
+
+Send GET request.
+
+const response = await request.get(
+'https://jsonplaceholder.typicode.com/posts/1'
+);
+
+Meaning:
+
+Get post whose ID is 1.
+
+---
+
+Step 2:
+
+Validate status code.
+
+expect(response.status()).toBe(200);
+
+Meaning:
+
+Request was successful.
+
+---
+
+Step 3:
+
+Convert response into JSON.
+
+const body = await response.json();
+
+Meaning:
+
+Access actual API response data.
+
+---
+
+Step 4:
+
+Validate path parameter result.
+
+expect(body.id).toBe(1);
+
+Meaning:
+
+Verify that the API returned the correct resource.
+
+---
+
+Sample Response
+
+{
+"userId": 1,
+"id": 1,
+"title": "sample title",
+"body": "sample body"
+}
+
+---
+
+Common Assertions
+
+Validate resource ID:
+
+expect(body.id).toBe(1);
+
+Validate user ID:
+
+expect(body.userId).toBe(1);
+
+Validate title exists:
+
+expect(body.title).toBeDefined();
+
+Validate body exists:
+
+expect(body.body).toBeDefined();
+
+---
+
+Path Parameters in PUT
+
+Example:
+
+PUT /posts/1
+
+Meaning:
+
+Update post whose ID is 1.
+
+Playwright:
+
+const response = await request.put(
+'https://jsonplaceholder.typicode.com/posts/1',
+{
+data:{
+title:'Updated Title'
+}
+}
+);
+
+---
+
+Path Parameters in PATCH
+
+Example:
+
+PATCH /posts/1
+
+Meaning:
+
+Partially update post whose ID is 1.
+
+---
+
+Path Parameters in DELETE
+
+Example:
+
+DELETE /posts/1
+
+Meaning:
+
+Delete post whose ID is 1.
+
+Playwright:
+
+const response = await request.delete(
+'https://jsonplaceholder.typicode.com/posts/1'
+);
+
+---
+
+Interview Questions
+
+Q. What are Path Parameters?
+
+Path parameters are values included in the URL path that uniquely identify a specific resource.
+
+Example:
+
+/users/5
+
+Here 5 is the path parameter.
+
+---
+
+Q. Why are Path Parameters used?
+
+To uniquely identify a specific resource.
+
+---
+
+Q. Give an example of a Path Parameter.
+
+Example:
+
+/posts/1
+
+Here 1 is the path parameter.
+
+---
+
+Q. Difference between Path Parameters and Query Parameters?
+
+Path Parameters:
+
+* Identify a specific resource
+* Mandatory
+* Part of URL path
+
+Example:
+
+/users/5
+
+Query Parameters:
+
+* Filter or modify results
+* Optional
+* Added after ?
+
+Example:
+
+/users?page=2
+
+---
+
+Q. Which is used to get a specific user?
+
+Path Parameter
+
+Example:
+
+/users/5
+
+---
+
+QA Perspective
+
+While testing APIs using path parameters, verify:
+
+1. Status Code
+
+expect(response.status()).toBe(200);
+
+2. Correct Resource Returned
+
+expect(body.id).toBe(1);
+
+3. Resource Data Accuracy
+
+expect(body.title)
+.toBeDefined();
+
+4. Required Fields Exist
+
+expect(body.userId)
+.toBeDefined();
+
+---
+
+Important Revision Points
+
+✓ Path parameters identify a specific resource.
+✓ Path parameters are part of the URL path.
+✓ Path parameters are mandatory.
+✓ Common examples:
+/users/1
+/posts/10
+/products/25
+✓ Used in GET, PUT, PATCH, and DELETE requests.
+✓ Validate that returned resource ID matches the path parameter.
+✓ Path parameters identify data.
+✓ Query parameters filter data.
