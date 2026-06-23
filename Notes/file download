@@ -1,0 +1,198 @@
+// ==========================
+// FILE DOWNLOAD IN PLAYWRIGHT
+// ==========================
+
+// WHAT IS FILE DOWNLOAD?
+// ----------------------
+
+// File Download means downloading a file from a website to the local system.
+
+// Examples:
+
+// ✔ Invoice PDF
+// ✔ Excel Report
+// ✔ CSV File
+// ✔ Resume
+
+// --------------------------------------------------
+
+// HOW PLAYWRIGHT HANDLES DOWNLOADS?
+// ---------------------------------
+
+// Playwright provides a special event:
+
+// waitForEvent('download')
+
+// --------------------------------------------------
+
+// WHY DO WE NEED IT?
+// ------------------
+
+// When user clicks:
+
+// Download Report
+
+// Browser starts downloading a file.
+
+// Playwright must wait for download to start.
+
+// --------------------------------------------------
+
+// BASIC DOWNLOAD EXAMPLE
+// ----------------------
+
+// const downloadPromise =
+// page.waitForEvent('download');
+
+// await page
+// .locator('#download-btn')
+// .click();
+
+// const download =
+// await downloadPromise;
+
+// --------------------------------------------------
+
+// UNDERSTANDING THE FLOW
+// ----------------------
+
+// Step 1
+
+// Wait for download.
+
+// const downloadPromise =
+// page.waitForEvent('download');
+
+// Step 2
+
+// Click download button.
+
+// await page
+// .locator('#download-btn')
+// .click();
+
+// Step 3
+
+// Capture download object.
+
+// const download =
+// await downloadPromise;
+
+// --------------------------------------------------
+
+// GET FILE NAME
+// -------------
+
+// const fileName =
+// download.suggestedFilename();
+
+// console.log(fileName);
+
+// Example Output:
+
+// report.pdf
+
+// --------------------------------------------------
+
+// SAVE FILE
+// ---------
+
+// await download.saveAs(
+//     'downloads/report.pdf'
+// );
+
+// Meaning:
+
+// Store downloaded file in downloads folder.
+
+// --------------------------------------------------
+
+// VERIFY FILE NAME
+// ----------------
+
+// expect(
+//     download.suggestedFilename()
+// ).toContain('.pdf');
+
+// --------------------------------------------------
+
+// COMPLETE EXAMPLE
+// ----------------
+
+// const downloadPromise =
+// page.waitForEvent('download');
+
+// await page
+// .locator('#download-btn')
+// .click();
+
+// const download =
+// await downloadPromise;
+
+// expect(
+//     download.suggestedFilename()
+// ).toContain('.pdf');
+
+// await download.saveAs(
+//     'downloads/report.pdf'
+// );
+
+// --------------------------------------------------
+
+// COMMON INTERVIEW QUESTIONS
+// --------------------------
+
+// Q. How do you handle file downloads in Playwright?
+
+// Answer:
+
+// Using:
+
+// page.waitForEvent('download')
+
+// --------------------------------------------------
+
+// Q. How do you get downloaded file name?
+
+// Answer:
+
+// download.suggestedFilename()
+
+// --------------------------------------------------
+
+// Q. How do you save downloaded file?
+
+// Answer:
+
+// download.saveAs()
+
+// --------------------------------------------------
+
+// QUICK REVISION
+// --------------
+
+// Wait for Download:
+
+// const downloadPromise =
+// page.waitForEvent('download');
+
+// Click:
+
+// await page
+// .locator('#download-btn')
+// .click();
+
+// Capture Download:
+
+// const download =
+// await downloadPromise;
+
+// Get File Name:
+
+// download.suggestedFilename();
+
+// Save File:
+
+// await download.saveAs(
+//     'downloads/report.pdf'
+// );

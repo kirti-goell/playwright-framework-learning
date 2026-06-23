@@ -1,0 +1,543 @@
+# Waits in Playwright
+
+## What are Waits?
+
+Waits are used to handle delays in web applications.
+
+Modern websites take time to:
+
+- Load pages
+- Display elements
+- Fetch API data
+- Render UI components
+
+If Playwright performs an action before the application is ready, the test may fail.
+
+Therefore, we use waits.
+
+--------------------------------------------------
+
+## Why Are Waits Needed?
+
+Example:
+
+Step 1:
+Click Login button
+
+Step 2:
+Dashboard page opens
+
+Problem:
+
+Dashboard may take 2-3 seconds to load.
+
+If Playwright immediately checks for dashboard elements, the test may fail.
+
+Waits help synchronize the test with the application.
+
+--------------------------------------------------
+
+# Types of Waits in Playwright
+
+1. Auto Waiting
+2. Explicit Waiting
+3. Hard Wait (Not Recommended)
+
+--------------------------------------------------
+
+# 1. Auto Waiting (Most Important)
+
+One of Playwright's biggest advantages.
+
+Playwright automatically waits before performing actions.
+
+Example:
+
+await page.locator('#login-button').click();
+
+Playwright automatically waits for:
+
+- Element to be present
+- Element to be visible
+- Element to be enabled
+- Element to be stable
+
+Then it performs the click.
+
+--------------------------------------------------
+
+Without Auto Waiting
+
+Other tools may require:
+
+wait until button appears
+wait until button is clickable
+then click
+
+--------------------------------------------------
+
+With Playwright
+
+Simply:
+
+await page.locator('#login-button').click();
+
+Playwright handles waiting internally.
+
+--------------------------------------------------
+
+## Auto Waiting Works For
+
+click()
+
+fill()
+
+check()
+
+uncheck()
+
+selectOption()
+
+hover()
+
+press()
+
+and most user actions
+
+--------------------------------------------------
+
+Example
+
+await page.locator('#user-name')
+    .fill('standard_user');
+
+Playwright waits until textbox is ready.
+
+--------------------------------------------------
+
+# Actionability Checks
+
+Before performing an action, Playwright checks:
+
+1. Element is attached to DOM
+2. Element is visible
+3. Element is enabled
+4. Element is stable
+5. Element can receive events
+
+Only then does the action happen.
+
+--------------------------------------------------
+
+# 2. Explicit Waits
+
+Used when Auto Waiting is not enough.
+
+We manually tell Playwright to wait for something.
+
+--------------------------------------------------
+
+# waitForSelector()
+
+Waits until an element appears.
+
+Syntax:
+
+await page.waitForSelector('selector');
+
+Example:
+
+await page.waitForSelector('.inventory_item');
+
+Useful when waiting for dynamically loaded elements.
+
+--------------------------------------------------
+
+# waitForURL()
+
+Waits until URL changes.
+
+Syntax:
+
+await page.waitForURL('expected-url');
+
+Example:
+
+await page.waitForURL(
+'https://www.saucedemo.com/inventory.html'
+);
+
+--------------------------------------------------
+
+Login Example
+
+await page.locator('#login-button').click();
+
+await page.waitForURL(
+'https://www.saucedemo.com/inventory.html'
+);
+
+--------------------------------------------------
+
+# waitForLoadState()
+
+Waits for page loading state.
+
+Syntax:
+
+await page.waitForLoadState();
+
+Default:
+
+await page.waitForLoadState('load');
+
+--------------------------------------------------
+
+Load States
+
+1. load
+2. domcontentloaded
+3. networkidle
+
+--------------------------------------------------
+
+load
+
+Waits until page completely loads.
+
+Example:
+
+await page.waitForLoadState('load');
+
+--------------------------------------------------
+
+domcontentloaded
+
+Waits until HTML is loaded.
+
+Images and CSS may still load later.
+
+Example:
+
+await page.waitForLoadState('domcontentloaded');
+
+--------------------------------------------------
+
+networkidle
+
+Waits until no network requests are active.
+
+Example:
+
+await page.waitForLoadState('networkidle');
+
+Useful after API-heavy pages.
+
+--------------------------------------------------
+
+# waitForResponse()
+
+Waits for a specific API response.
+
+Very useful in modern applications.
+
+Syntax:
+
+await page.waitForResponse(
+response =>
+response.url().includes('/users')
+&& response.status() === 200
+);
+
+--------------------------------------------------
+
+Example
+
+await page.waitForResponse(
+response =>
+response.url().includes('/inventory')
+);
+
+Useful when UI depends on API data.
+
+--------------------------------------------------
+
+# waitForTimeout()
+
+Hard Wait
+
+Syntax:
+
+await page.waitForTimeout(5000);
+
+Meaning:
+
+Wait exactly 5 seconds.
+
+--------------------------------------------------
+
+Example
+
+await page.waitForTimeout(3000);
+
+Playwright pauses for 3 seconds.
+
+--------------------------------------------------
+
+Why Hard Wait is Bad?
+
+Suppose page loads in 1 second.
+
+You still wait:
+
+3 seconds
+
+Wasting time.
+
+--------------------------------------------------
+
+Suppose page loads in 6 seconds.
+
+You waited:
+
+5 seconds
+
+Test still fails.
+
+--------------------------------------------------
+
+Therefore:
+
+Avoid hard waits whenever possible.
+
+--------------------------------------------------
+
+Preferred Approach
+
+Bad:
+
+await page.waitForTimeout(5000);
+
+Good:
+
+await page.waitForSelector('.inventory_item');
+
+--------------------------------------------------
+
+# Assertions as Waits
+
+Playwright assertions automatically wait.
+
+Example:
+
+await expect(
+page.locator('[data-test="title"]')
+).toBeVisible();
+
+Playwright keeps checking until:
+
+- Element becomes visible
+or
+- Timeout occurs
+
+--------------------------------------------------
+
+Another Example
+
+await expect(page)
+.toHaveURL(
+'https://www.saucedemo.com/inventory.html'
+);
+
+Playwright automatically waits for URL change.
+
+--------------------------------------------------
+
+# Default Timeout
+
+Playwright default timeout:
+
+30 seconds
+
+If condition is not met within timeout:
+
+Test fails.
+
+--------------------------------------------------
+
+Custom Timeout
+
+await expect(
+page.locator('.success')
+).toBeVisible({
+timeout:10000
+});
+
+Meaning:
+
+Wait up to 10 seconds.
+
+--------------------------------------------------
+
+# Real Login Example
+
+await page.goto(
+'https://www.saucedemo.com'
+);
+
+await page.locator('#user-name')
+.fill('standard_user');
+
+await page.locator('#password')
+.fill('secret_sauce');
+
+await page.locator('#login-button')
+.click();
+
+await page.waitForURL(
+'https://www.saucedemo.com/inventory.html'
+);
+
+await expect(
+page.locator('[data-test="title"]')
+).toHaveText('Products');
+
+--------------------------------------------------
+
+Interview Questions
+
+Q. What are waits?
+
+Waits help synchronize tests with the application and handle delays in loading elements, pages, and API responses.
+
+--------------------------------------------------
+
+Q. What is Auto Waiting?
+
+Auto Waiting is Playwright's built-in feature that automatically waits for elements to become ready before performing actions.
+
+--------------------------------------------------
+
+Q. Why is Playwright famous for Auto Waiting?
+
+Because it automatically waits for:
+
+- Visible
+- Enabled
+- Stable
+- Attached elements
+
+before interacting with them.
+
+--------------------------------------------------
+
+Q. What is Explicit Wait?
+
+A wait manually added by the tester.
+
+Examples:
+
+waitForSelector()
+
+waitForURL()
+
+waitForResponse()
+
+waitForLoadState()
+
+--------------------------------------------------
+
+Q. Why should we avoid waitForTimeout()?
+
+Because:
+
+- Slows down execution
+- Makes tests unstable
+- Not dynamic
+- Considered bad practice
+
+--------------------------------------------------
+
+Q. Which wait is most commonly used?
+
+Auto Waiting
+
+and
+
+Playwright Assertions
+
+--------------------------------------------------
+
+# Quick Revision
+
+WAITS IN PLAYWRIGHT
+
+Purpose:
+Handle delays and synchronization issues.
+
+Types:
+
+1. Auto Waiting
+2. Explicit Waiting
+3. Hard Wait
+
+--------------------------------------------------
+
+Auto Waiting
+
+Playwright automatically waits for:
+
+- Visible
+- Enabled
+- Stable
+- Attached
+
+Example:
+
+await page.locator('#login-button').click();
+
+--------------------------------------------------
+
+Explicit Waits
+
+waitForSelector()
+
+waitForURL()
+
+waitForLoadState()
+
+waitForResponse()
+
+--------------------------------------------------
+
+Hard Wait
+
+await page.waitForTimeout(5000);
+
+Avoid whenever possible.
+
+--------------------------------------------------
+
+Best Practice
+
+Prefer:
+
+- Auto Waiting
+- Assertions
+- waitForSelector()
+- waitForURL()
+- waitForResponse()
+
+Avoid:
+
+waitForTimeout()
+
+--------------------------------------------------
+
+Most Asked Interview Questions
+
+1. What is Auto Waiting?
+2. Difference between Auto and Explicit Wait?
+3. Why avoid waitForTimeout()?
+4. What is waitForResponse()?
+5. What are Actionability Checks?

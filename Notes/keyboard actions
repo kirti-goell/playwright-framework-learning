@@ -1,0 +1,251 @@
+============================
+KEYBOARD ACTIONS IN PLAYWRIGHT
+============================
+
+WHAT ARE KEYBOARD ACTIONS?
+--------------------------
+
+Keyboard actions simulate user typing
+and pressing keys.
+
+Examples:
+
+✔ Enter
+✔ Tab
+✔ Escape
+✔ Ctrl+A
+✔ Ctrl+C
+✔ Ctrl+V
+
+--------------------------------------------------
+
+1. TYPE TEXT
+------------
+
+Method:
+
+fill()
+
+Example:
+
+await page
+.locator('#username')
+.fill('Kirti');
+
+--------------------------------------------------
+
+2. PRESS A KEY
+--------------
+
+Syntax:
+
+await page.keyboard.press('Key');
+
+Example:
+
+await page.keyboard.press('Enter');
+
+--------------------------------------------------
+
+COMMON KEYS
+-----------
+
+Enter
+
+await page.keyboard.press('Enter');
+
+----------------------
+
+Tab
+
+await page.keyboard.press('Tab');
+
+----------------------
+
+Escape
+
+await page.keyboard.press('Escape');
+
+----------------------
+
+Arrow Down
+
+await page.keyboard.press('ArrowDown');
+
+----------------------
+
+Arrow Up
+
+await page.keyboard.press('ArrowUp');
+
+--------------------------------------------------
+
+3. KEY COMBINATIONS
+-------------------
+
+Ctrl + A
+
+Select all text.
+
+await page.keyboard.press(
+    'Control+A'
+);
+
+--------------------------------------------------
+
+Ctrl + C
+
+Copy text.
+
+await page.keyboard.press(
+    'Control+C'
+);
+
+--------------------------------------------------
+
+Ctrl + V
+
+Paste text.
+
+await page.keyboard.press(
+    'Control+V'
+);
+
+--------------------------------------------------
+
+Ctrl + X
+
+Cut text.
+
+await page.keyboard.press(
+    'Control+X'
+);
+
+--------------------------------------------------
+
+4. TYPE USING KEYBOARD
+----------------------
+
+await page.keyboard.type(
+    'Hello World'
+);
+
+--------------------------------------------------
+
+5. PRESS SEQUENTIAL KEYS
+------------------------
+
+await page.keyboard.press('Tab');
+
+await page.keyboard.press('Enter');
+
+--------------------------------------------------
+
+REAL PROJECT EXAMPLES
+---------------------
+
+Search Box
+
+await page
+.locator('#search')
+.fill('Playwright');
+
+await page.keyboard.press(
+    'Enter'
+);
+
+--------------------------------------------------
+
+Move Between Fields
+
+await page.keyboard.press(
+    'Tab'
+);
+
+--------------------------------------------------
+
+Close Popup
+
+await page.keyboard.press(
+    'Escape'
+);
+
+--------------------------------------------------
+
+INTERVIEW QUESTIONS
+-------------------
+
+Q. How do you press Enter?
+
+Answer:
+
+await page.keyboard.press(
+    'Enter'
+);
+
+--------------------------------------------------
+
+Q. How do you perform Ctrl+A?
+
+Answer:
+
+await page.keyboard.press(
+    'Control+A'
+);
+
+--------------------------------------------------
+
+Q. How do you type using keyboard?
+
+Answer:
+
+await page.keyboard.type(
+    'Hello World'
+);
+
+--------------------------------------------------
+
+QUICK REVISION
+--------------
+
+Enter:
+
+await page.keyboard.press(
+    'Enter'
+);
+
+Tab:
+
+await page.keyboard.press(
+    'Tab'
+);
+
+Escape:
+
+await page.keyboard.press(
+    'Escape'
+);
+
+Ctrl+A:
+
+await page.keyboard.press(
+    'Control+A'
+);
+
+Ctrl+C:
+
+await page.keyboard.press(
+    'Control+C'
+);
+
+Ctrl+V:
+
+await page.keyboard.press(
+    'Control+V'
+);
+
+Type Text:
+
+await page.keyboard.type(
+    'Hello World'
+);

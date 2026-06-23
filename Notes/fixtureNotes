@@ -1,0 +1,265 @@
+========================
+FIXTURES IN PLAYWRIGHT
+========================
+
+WHAT ARE FIXTURES?
+------------------
+Fixtures are reusable resources provided to a test before it starts.
+
+They help avoid writing the same setup code again and again.
+
+Example:
+Without Fixtures:
+
+const loginPage = new LoginPage(page);
+const inventoryPage = new InventoryPage(page);
+const cartPage = new CartPage(page);
+
+If we have 20 tests, we write these lines 20 times.
+
+Fixtures solve this problem.
+
+--------------------------------------------------
+
+BUILT-IN FIXTURES
+-----------------
+
+Playwright already provides some fixtures:
+
+page      -> Browser tab
+request   -> API testing
+browser   -> Browser instance
+context   -> Browser context
+
+Example:
+
+test('Example', async ({ page, request }) => {
+
+});
+
+Here page and request are built-in fixtures.
+
+--------------------------------------------------
+
+CUSTOM FIXTURES
+---------------
+
+We can create our own fixtures.
+
+Example:
+
+loginPage
+inventoryPage
+cartPage
+
+Instead of creating their objects in every test,
+Playwright creates them automatically.
+
+--------------------------------------------------
+
+CREATING CUSTOM FIXTURES
+------------------------
+
+Step 1:
+
+Import Playwright test as base.
+
+import { test as base } from '@playwright/test';
+
+base = Original Playwright test
+
+--------------------------------------------------
+
+Step 2:
+
+Define fixture types.
+
+type MyFixtures = {
+    loginPage: LoginPage;
+    inventoryPage: InventoryPage;
+    cartPage: CartPage;
+};
+
+This tells TypeScript what fixtures we are creating.
+
+--------------------------------------------------
+
+Step 3:
+
+Extend Playwright test.
+
+export const test = base.extend<MyFixtures>({
+
+});
+
+Meaning:
+
+Take Playwright's original test
+and add custom fixtures.
+
+--------------------------------------------------
+
+LOGIN PAGE FIXTURE
+------------------
+
+loginPage: async ({ page }, use) => {
+
+    const loginPage = new LoginPage(page);
+
+    await use(loginPage);
+
+}
+
+Explanation:
+
+page
+→ Built-in Playwright fixture.
+
+const loginPage = new LoginPage(page);
+
+→ Creates LoginPage object.
+
+await use(loginPage);
+
+→ Makes loginPage available inside tests.
+
+--------------------------------------------------
+
+INVENTORY PAGE FIXTURE
+----------------------
+
+inventoryPage: async ({ page }, use) => {
+
+    const inventoryPage = new InventoryPage(page);
+
+    await use(inventoryPage);
+
+}
+
+Creates InventoryPage object
+and provides it to tests.
+
+--------------------------------------------------
+
+CART PAGE FIXTURE
+-----------------
+
+cartPage: async ({ page }, use) => {
+
+    const cartPage = new CartPage(page);
+
+    await use(cartPage);
+
+}
+
+Creates CartPage object
+and provides it to tests.
+
+--------------------------------------------------
+
+WHAT DOES use() DO?
+-------------------
+
+use() passes the fixture object to the test.
+
+Example:
+
+await use(loginPage);
+
+Means:
+
+"Provide loginPage object to any test that requests it."
+
+--------------------------------------------------
+
+USING FIXTURES IN TESTS
+-----------------------
+
+Before Fixtures:
+
+test('Login Test', async ({ page }) => {
+
+    const loginPage = new LoginPage(page);
+    const inventoryPage = new InventoryPage(page);
+
+});
+
+--------------------------------------------------
+
+After Fixtures:
+
+test('Login Test', async ({
+    page,
+    loginPage,
+    inventoryPage,
+    cartPage
+}) => {
+
+});
+
+No object creation required.
+
+Playwright creates them automatically.
+
+--------------------------------------------------
+
+FLOW OF EXECUTION
+-----------------
+
+Test Starts
+    ↓
+Playwright creates page
+    ↓
+Fixture creates LoginPage
+    ↓
+Fixture creates InventoryPage
+    ↓
+Fixture creates CartPage
+    ↓
+Objects passed to test
+    ↓
+Test executes
+
+--------------------------------------------------
+
+ADVANTAGES OF FIXTURES
+----------------------
+
+1. Removes duplicate code
+
+2. Makes tests cleaner
+
+3. Improves reusability
+
+4. Easy maintenance
+
+5. Common setup can be shared across tests
+
+--------------------------------------------------
+
+MOST IMPORTANT INTERVIEW POINTS
+-------------------------------
+
+1. Built-in Fixtures:
+   - page
+   - request
+   - browser
+   - context
+
+2. Custom Fixtures:
+   - loginPage
+   - inventoryPage
+   - cartPage
+
+3. base.extend()
+   - Used to create custom fixtures.
+
+4. use()
+   - Provides fixture object to test.
+
+--------------------------------------------------
+
+ONE-LINE DEFINITION
+-------------------
+
+Fixtures are reusable setup objects that Playwright automatically creates and provides to tests.

@@ -1,0 +1,417 @@
+=========================
+FRAMES / IFRAMES IN PLAYWRIGHT
+=========================
+
+WHAT IS AN IFRAME?
+------------------
+
+An iframe (Inline Frame) is a webpage inside another webpage.
+
+Think of it as:
+
+Main Page
+    ↓
+Contains another mini webpage
+
+That mini webpage is called an iframe.
+
+--------------------------------------------------
+
+REAL LIFE EXAMPLES
+------------------
+
+1. Payment Gateway
+
+Website
+    ↓
+Payment Form (inside iframe)
+
+2. YouTube Video Embed
+
+Website
+    ↓
+Embedded YouTube Player (iframe)
+
+3. Google Maps Embed
+
+Website
+    ↓
+Google Map (iframe)
+
+4. Chat Widgets
+
+Website
+    ↓
+Chat Support Window (iframe)
+
+--------------------------------------------------
+
+WHY DO WE NEED SPECIAL HANDLING?
+--------------------------------
+
+Suppose page contains:
+
+Main Page
+    ↓
+iframe
+    ↓
+Username Textbox
+
+If we try:
+
+await page.locator('#username').fill('Kirti');
+
+Playwright may fail.
+
+Why?
+
+Because username textbox is NOT present
+on the main page.
+
+It is inside iframe.
+
+--------------------------------------------------
+
+IMPORTANT CONCEPT
+-----------------
+
+Main Page and Iframe are different DOMs.
+
+Main Page DOM
+    ↓
+Contains iframe
+
+Iframe DOM
+    ↓
+Contains actual elements
+
+Therefore:
+
+page.locator()
+
+cannot directly access iframe elements.
+
+--------------------------------------------------
+
+HOW TO HANDLE IFRAMES?
+----------------------
+
+Playwright provides:
+
+1. frameLocator()  ⭐ Most Common
+2. frame()
+
+--------------------------------------------------
+
+METHOD 1: frameLocator()
+------------------------
+
+Recommended Approach
+
+Syntax:
+
+const frame =
+page.frameLocator('iframe-selector');
+
+--------------------------------------------------
+
+EXAMPLE
+-------
+
+HTML:
+
+<iframe id="login-frame"></iframe>
+
+Inside iframe:
+
+<input id="username">
+
+Playwright:
+
+const frame =
+page.frameLocator('#login-frame');
+
+await frame
+.locator('#username')
+.fill('Kirti');
+
+--------------------------------------------------
+
+UNDERSTANDING THE FLOW
+----------------------
+
+Step 1
+
+Locate iframe
+
+const frame =
+page.frameLocator('#login-frame');
+
+Step 2
+
+Locate element inside iframe
+
+frame.locator('#username')
+
+Step 3
+
+Perform action
+
+.fill('Kirti')
+
+--------------------------------------------------
+
+COMPLETE EXAMPLE
+----------------
+
+const frame =
+page.frameLocator('#login-frame');
+
+await frame
+.locator('#username')
+.fill('standard_user');
+
+await frame
+.locator('#password')
+.fill('secret_sauce');
+
+await frame
+.locator('#login-button')
+.click();
+
+--------------------------------------------------
+
+METHOD 2: frame()
+-----------------
+
+Alternative Approach
+
+Syntax:
+
+const frame =
+page.frame({ name: 'frame-name' });
+
+--------------------------------------------------
+
+EXAMPLE
+-------
+
+const frame =
+page.frame({ name: 'login-frame' });
+
+await frame?.locator('#username')
+.fill('Kirti');
+
+--------------------------------------------------
+
+WHY frameLocator() IS PREFERRED?
+--------------------------------
+
+frameLocator()
+
+✔ Cleaner
+✔ Auto waits
+✔ Easier to read
+
+Therefore in real projects:
+
+Mostly use frameLocator()
+
+--------------------------------------------------
+
+HOW TO IDENTIFY AN IFRAME?
+--------------------------
+
+Open Browser DevTools
+
+Look for:
+
+<iframe>
+
+Example:
+
+<iframe
+id="payment-frame">
+</iframe>
+
+If you see iframe tag
+
+→ Element is inside iframe.
+
+--------------------------------------------------
+
+NESTED IFRAMES
+--------------
+
+Sometimes:
+
+Main Page
+    ↓
+Iframe 1
+    ↓
+Iframe 2
+    ↓
+Textbox
+
+This is called Nested Iframe.
+
+--------------------------------------------------
+
+PLAYWRIGHT HANDLING
+-------------------
+
+const innerFrame =
+page
+.frameLocator('#frame1')
+.frameLocator('#frame2');
+
+await innerFrame
+.locator('#username')
+.fill('Kirti');
+
+--------------------------------------------------
+
+VERIFY ELEMENT INSIDE IFRAME
+----------------------------
+
+const frame =
+page.frameLocator('#login-frame');
+
+await expect(
+frame.locator('#username')
+).toBeVisible();
+
+--------------------------------------------------
+
+CLICK INSIDE IFRAME
+-------------------
+
+const frame =
+page.frameLocator('#login-frame');
+
+await frame
+.locator('#submit')
+.click();
+
+--------------------------------------------------
+
+READ TEXT FROM IFRAME
+---------------------
+
+const frame =
+page.frameLocator('#login-frame');
+
+const text =
+await frame
+.locator('.message')
+.textContent();
+
+--------------------------------------------------
+
+COMMON MISTAKE
+--------------
+
+Wrong:
+
+await page
+.locator('#username')
+.fill('Kirti');
+
+Reason:
+
+Element is inside iframe.
+
+--------------------------------------------------
+
+Correct:
+
+const frame =
+page.frameLocator('#login-frame');
+
+await frame
+.locator('#username')
+.fill('Kirti');
+
+--------------------------------------------------
+
+INTERVIEW QUESTIONS
+-------------------
+
+Q. What is an iframe?
+
+Answer:
+
+An iframe is a webpage embedded inside another webpage.
+
+--------------------------------------------------
+
+Q. Why can't page.locator() access iframe elements?
+
+Answer:
+
+Because iframe has its own DOM which is separate from the main page DOM.
+
+--------------------------------------------------
+
+Q. How do you handle iframes in Playwright?
+
+Answer:
+
+Using:
+
+1. frameLocator()
+2. frame()
+
+--------------------------------------------------
+
+Q. Which method is preferred?
+
+Answer:
+
+frameLocator()
+
+because it is cleaner and supports auto waiting.
+
+--------------------------------------------------
+
+Q. How do you identify an iframe?
+
+Answer:
+
+Inspect the page and look for the <iframe> tag.
+
+--------------------------------------------------
+
+QUICK REVISION
+--------------
+
+IFRAME
+
+Definition:
+A webpage embedded inside another webpage.
+
+Problem:
+page.locator() cannot directly access iframe elements.
+
+Solution:
+
+const frame =
+page.frameLocator('#frame-id');
+
+Access Elements:
+
+await frame
+.locator('#username')
+.fill('Kirti');
+
+Methods:
+
+1. frameLocator() ⭐ Recommended
+2. frame()
+
+Reason:
+Iframe has its own DOM.
+
+Most Common Interview Answer:
+
+Use frameLocator() to interact with elements inside an iframe.

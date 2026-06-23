@@ -1,0 +1,136 @@
+========================
+FILE UPLOAD IN PLAYWRIGHT
+========================
+
+WHAT IS FILE UPLOAD?
+--------------------
+
+File Upload means selecting a file from the system and uploading it to a website.
+
+Examples:
+
+✔ Upload Resume
+✔ Upload Profile Picture
+✔ Upload Document
+✔ Upload PDF
+
+--------------------------------------------------
+
+HOW PLAYWRIGHT HANDLES FILE UPLOAD?
+-----------------------------------
+
+Playwright does NOT open the OS file picker window.
+
+Instead, it directly provides the file path.
+
+Method:
+
+setInputFiles()
+
+--------------------------------------------------
+
+HTML EXAMPLE
+------------
+
+<input
+type="file"
+id="upload">
+
+--------------------------------------------------
+
+UPLOAD SINGLE FILE
+------------------
+
+await page
+.locator('#upload')
+.setInputFiles('tests/data/resume.pdf');
+
+Meaning:
+
+Select resume.pdf and upload it.
+
+--------------------------------------------------
+
+UPLOAD IMAGE
+------------
+
+await page
+.locator('#upload')
+.setInputFiles('images/profile.png');
+
+--------------------------------------------------
+
+UPLOAD MULTIPLE FILES
+---------------------
+
+await page
+.locator('#upload')
+.setInputFiles([
+    'resume.pdf',
+    'photo.png'
+]);
+
+--------------------------------------------------
+
+REMOVE UPLOADED FILE
+--------------------
+
+await page
+.locator('#upload')
+.setInputFiles([]);
+
+Meaning:
+
+Clear selected files.
+
+--------------------------------------------------
+
+VERIFY FILE UPLOADED
+--------------------
+
+await expect(
+    page.locator('#uploaded-file')
+).toHaveText('resume.pdf');
+
+--------------------------------------------------
+
+COMMON INTERVIEW QUESTION
+-------------------------
+
+Q. How do you upload files in Playwright?
+
+Answer:
+
+Using setInputFiles().
+
+Example:
+
+await page
+.locator('#upload')
+.setInputFiles('resume.pdf');
+
+--------------------------------------------------
+
+QUICK REVISION
+--------------
+
+Upload File:
+
+await page
+.locator('#upload')
+.setInputFiles('resume.pdf');
+
+Multiple Files:
+
+await page
+.locator('#upload')
+.setInputFiles([
+    'resume.pdf',
+    'photo.png'
+]);
+
+Remove Files:
+
+await page
+.locator('#upload')
+.setInputFiles([]);

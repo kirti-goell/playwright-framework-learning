@@ -1,0 +1,323 @@
+========================
+DROPDOWNS IN PLAYWRIGHT
+========================
+
+WHAT IS A DROPDOWN?
+-------------------
+
+A dropdown is a list of options from which a user can select one or more values.
+
+Example:
+
+Country
+
+▼ India
+  USA
+  Canada
+  Australia
+
+--------------------------------------------------
+
+TYPES OF DROPDOWNS
+------------------
+
+1. Standard HTML Dropdown
+   Uses <select> tag
+
+2. Custom Dropdown
+   Built using div, span, li, etc.
+
+--------------------------------------------------
+
+1. STANDARD HTML DROPDOWN
+-------------------------
+
+HTML:
+
+<select id="country">
+
+    <option value="in">India</option>
+
+    <option value="us">USA</option>
+
+    <option value="ca">Canada</option>
+
+</select>
+
+For these dropdowns Playwright provides:
+
+selectOption()
+
+--------------------------------------------------
+
+SELECT BY VISIBLE TEXT
+----------------------
+
+await page.locator('#country')
+.selectOption({
+    label: 'India'
+});
+
+Meaning:
+
+Select the option whose text is India.
+
+--------------------------------------------------
+
+SELECT BY VALUE
+---------------
+
+HTML:
+
+<option value="in">India</option>
+
+Playwright:
+
+await page.locator('#country')
+.selectOption('in');
+
+OR
+
+await page.locator('#country')
+.selectOption({
+    value: 'in'
+});
+
+--------------------------------------------------
+
+SELECT BY INDEX
+---------------
+
+await page.locator('#country')
+.selectOption({
+    index: 0
+});
+
+Meaning:
+
+Select first option.
+
+Index starts from 0.
+
+--------------------------------------------------
+
+VERIFY SELECTED VALUE
+---------------------
+
+await expect(
+    page.locator('#country')
+).toHaveValue('in');
+
+--------------------------------------------------
+
+MULTI SELECT DROPDOWN
+---------------------
+
+HTML:
+
+<select multiple>
+
+    <option value="java">Java</option>
+
+    <option value="ts">TypeScript</option>
+
+    <option value="python">Python</option>
+
+</select>
+
+Playwright:
+
+await page.locator('#skills')
+.selectOption([
+    'java',
+    'ts'
+]);
+
+--------------------------------------------------
+
+CUSTOM DROPDOWN
+---------------
+
+Not every dropdown uses <select>.
+
+Many websites create dropdowns using:
+
+div
+span
+li
+
+Example:
+
+▼ Select Country
+
+After clicking:
+
+India
+USA
+Canada
+
+--------------------------------------------------
+
+HOW TO HANDLE CUSTOM DROPDOWNS?
+-------------------------------
+
+Step 1
+
+Click dropdown.
+
+await page.locator('#country')
+.click();
+
+Step 2
+
+Click desired option.
+
+await page.getByText('India')
+.click();
+
+--------------------------------------------------
+
+EXAMPLE
+-------
+
+await page.locator('.dropdown')
+.click();
+
+await page.locator(
+    'text=India'
+).click();
+
+--------------------------------------------------
+
+HOW TO IDENTIFY DROPDOWN TYPE?
+------------------------------
+
+Inspect element.
+
+If you see:
+
+<select>
+
+→ Standard Dropdown
+
+Use:
+
+selectOption()
+
+--------------------------------
+
+If you see:
+
+div
+span
+li
+
+→ Custom Dropdown
+
+Use:
+
+click()
+
+--------------------------------------------------
+
+COMMON MISTAKES
+---------------
+
+Wrong:
+
+await page.locator('.dropdown')
+.selectOption('India');
+
+Reason:
+
+Custom dropdown does not support selectOption().
+
+--------------------------------------------------
+
+Correct:
+
+await page.locator('.dropdown')
+.click();
+
+await page.getByText('India')
+.click();
+
+--------------------------------------------------
+
+INTERVIEW QUESTIONS
+-------------------
+
+Q. How do you handle dropdowns in Playwright?
+
+Answer:
+
+For standard dropdowns use:
+
+selectOption()
+
+For custom dropdowns use:
+
+click() and select the option.
+
+--------------------------------------------------
+
+Q. How do you select by text?
+
+Answer:
+
+await locator.selectOption({
+    label: 'India'
+});
+
+--------------------------------------------------
+
+Q. How do you select by value?
+
+Answer:
+
+await locator.selectOption({
+    value: 'in'
+});
+
+--------------------------------------------------
+
+Q. How do you select by index?
+
+Answer:
+
+await locator.selectOption({
+    index: 0
+});
+
+--------------------------------------------------
+
+QUICK REVISION
+--------------
+
+<select>
+    ↓
+Use selectOption()
+
+Methods:
+
+label
+value
+index
+
+--------------------------------
+
+Custom Dropdown
+(div, span, li)
+    ↓
+click dropdown
+    ↓
+click option
+
+--------------------------------
+
+Most Common Method:
+
+await page.locator('#country')
+.selectOption({
+    label: 'India'
+});

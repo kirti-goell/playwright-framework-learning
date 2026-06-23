@@ -1,0 +1,189 @@
+=========================
+MOUSE ACTIONS IN PLAYWRIGHT
+=========================
+
+WHAT ARE MOUSE ACTIONS?
+-----------------------
+
+Mouse actions simulate user interactions with the mouse.
+
+Examples:
+
+✔ Click
+✔ Double Click
+✔ Right Click
+✔ Hover
+✔ Drag and Drop
+
+--------------------------------------------------
+
+1. SINGLE CLICK
+---------------
+
+Used to click a button, link, checkbox, etc.
+
+Syntax:
+
+await locator.click();
+
+Example:
+
+await page
+.locator('#login-button')
+.click();
+
+--------------------------------------------------
+
+2. DOUBLE CLICK
+---------------
+
+Used when application requires
+double-click action.
+
+Syntax:
+
+await locator.dblclick();
+
+Example:
+
+await page
+.locator('#edit-file')
+.dblclick();
+
+--------------------------------------------------
+
+3. RIGHT CLICK
+--------------
+
+Also called Context Click.
+
+Used to open context menu.
+
+Syntax:
+
+await locator.click({
+    button: 'right'
+});
+
+Example:
+
+await page
+.locator('#file')
+.click({
+    button: 'right'
+});
+
+--------------------------------------------------
+
+4. HOVER
+--------
+
+Moves mouse over an element.
+
+Used for:
+
+✔ Menus
+✔ Tooltips
+✔ Hidden options
+
+Syntax:
+
+await locator.hover();
+
+Example:
+
+await page
+.locator('.menu')
+.hover();
+
+--------------------------------------------------
+
+5. DRAG AND DROP
+----------------
+
+Used to move an element from
+one location to another.
+
+Syntax:
+
+await source.dragTo(target);
+
+Example:
+
+await page
+.locator('#source')
+.dragTo(
+    page.locator('#target')
+);
+
+--------------------------------------------------
+
+ALTERNATIVE DRAG & DROP
+-----------------------
+
+await page.mouse.down();
+
+await page.mouse.move(
+    x,
+    y
+);
+
+await page.mouse.up();
+
+Used for advanced scenarios.
+
+--------------------------------------------------
+
+INTERVIEW QUESTIONS
+-------------------
+
+Q. How do you perform a right click?
+
+Answer:
+
+await locator.click({
+    button: 'right'
+});
+
+--------------------------------------------------
+
+Q. How do you hover over an element?
+
+Answer:
+
+await locator.hover();
+
+--------------------------------------------------
+
+Q. How do you perform drag and drop?
+
+Answer:
+
+await source.dragTo(target);
+
+--------------------------------------------------
+
+QUICK REVISION
+--------------
+
+Single Click:
+
+await locator.click();
+
+Double Click:
+
+await locator.dblclick();
+
+Right Click:
+
+await locator.click({
+    button: 'right'
+});
+
+Hover:
+
+await locator.hover();
+
+Drag & Drop:
+
+await source.dragTo(target);
